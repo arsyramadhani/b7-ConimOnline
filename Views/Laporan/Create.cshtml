@@ -1,0 +1,231 @@
+﻿
+@{
+    ViewBag.Title = "Buat Laporan Conim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row px-2"> 
+    <div class="col-12 col-xl-8">
+        <div class="card card-body border-0 shadow mb-4">
+            <form onsubmit="(e) => { e.preventDefault() }">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <div>
+                            <label for="sel_tipe">Tipe Conim</label>
+                            <select id="sel_tipe" class="form-control ">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div>
+                            <label for="sel_dept">Departemen</label>
+                            <select id="sel_dept" class="form-control"> 
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <div>
+                            <label for="sel_nama">Nama</label>
+                            <select id="sel_nama" class="form-control">
+                            </select>
+                            <small id="namaHelp" class="form-text text-muted text-italic  ">*Ketik manual jika nama tidak tersedia</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3" id="row_anggota" hidden> 
+                    <div class="col-md-12 mb-3">
+                        <div>
+                            <label for="sel_anggota1">Anggota 1</label>
+                            <select id="sel_anggota1" class="form-control">
+                            </select>
+                            <small id="namaHelp" class="form-text text-muted text-italic  ">*Ketik manual jika nama tidak tersedia</small>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <div>
+                            <label for="sel_anggota2">Anggota 2</label>
+                            <select id="sel_anggota2" class="form-control">
+                            </select>
+                            <small id="namaHelp" class="form-text text-muted text-italic  ">*Ketik manual jika nama tidak tersedia</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class=" ">
+                        <label for="textarea">Tema Conim</label>
+                        <textarea class="form-control" placeholder="Enter your message..." id="textarea" rows="4"></textarea>
+                    </div>
+                </div>
+                <hr />
+                <div class="row mb-3">
+                    <div class="col-md-9 ">
+                        <div class="">
+                            <label for="fileUpload" class="form-label">Upload File Conim</label>
+                            <input class="form-control" type="file" id="fileUpload"> 
+                            <small id="fileUpload" class="form-text text-muted text-italic">*Format file adalah xlsx/docx, Maks: 5mb</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 ">
+                        <div class="">
+                            <div class="mt-4"></div>
+                            @*<button class="btn btn-gray-800 mt-2  animate-up-2" style="width: 100%">Upload</button>*@
+                            <button id="btnUpload"  type="button" class="btn mt-2 btn-primary d-inline-flex align-items-center">
+                                Upload
+                                <svg class="icon icon-xxs ms-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2 9.5A3.5 3.5 0 005.5 13H9v2.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 15.586V13h2.5a4.5 4.5 0 10-.616-8.958 4.002 4.002 0 10-7.753 1.977A3.5 3.5 0 002 9.5zm9 3.5H9V8a1 1 0 012 0v5z" clip-rule="evenodd"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button class="btn btn-gray-800 mt-2 animate-up-2" type="submit">Simpan</button>
+                    <button class="btn btn-yellow-100 mt-2 animate-up-2" type="reset">Reset</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-12 col-xl-4">
+        <div class="row">
+            <div class="col-12  ">
+                <div class="card shadow border-0 text-left p-0">
+                    <div class="card-body ">
+                        <h5 class="h6 ">Cara Membuat Conim</h5>
+                        <p>1. Pilih Tipe Conim <br /> 2. Pilih Departemen</p> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts { 
+
+    <script type="text/javascript">   
+         
+         
+        let state = {
+            tipe: 'A3R',
+            pathFile: ''
+        }
+
+
+        $(document).ready(function () {
+            // Config
+            $('#sel_tipe').select2({ 
+                minimumResultsForSearch: Infinity
+            });
+            $('#sel_dept').select2({ 
+            });
+
+            $('#sel_nama').select2({
+                tags: true,
+                insertTag: function (data, tag) {
+                    // Insert the tag at the end of the results
+                    data.push(tag);
+                }
+            });
+            $('[id^=sel_anggota]').select2({
+                tags: true,
+                placeholder: "Input Nama Anggota"
+            }); 
+             
+
+            getTipeConim()
+            //getNama()
+            getDepartment()
+            // On Select Conim
+            $('#sel_tipe').on('select2:select', function (e) {
+                const tipe = e.params.data.id
+                tipe === 'SS' ? $('#row_anggota').attr('hidden', false) : $('#row_anggota').attr('hidden', 'hidden')
+                
+            });
+            $('#sel_nama').on('select2:select', function (e) {
+                const data = e.params.data.id
+                console.log(data)
+            });
+             
+            $('#fileUpload').change(function (e) {
+                e.preventDefault(); 
+                const formData = new FormData()
+                formData.append('file', $("#fileUpload")[0].files[0]) 
+                const file = formData.get('file')
+                const fileType = file.name.split('.')[1].toLowerCase()
+
+                // application/vnd.ms-excel
+                // application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+                // application/msword
+                // application/vnd.openxmlformats-officedocument.wordprocessingml.document
+                console.log(fileType) 
+
+                if (!validateFile(fileType)) {
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'Hanya diperbolehkan file dengan extensi .docx/.xslx'
+                    })
+
+                    $(this).val(null);
+                    formData.delete('file')
+                }
+
+            });
+        });
+
+        // Validate File Type
+        const validateFile = (fileType) => {
+            var allowedExtensions =
+                /(\.doc|\.docx|\.xls|\.xlsx)$/i;
+             
+            return !allowedExtensions.exec('.' + fileType) ? false : true 
+
+        }
+
+        // Fetch Conim Types
+        const getTipeConim = () => { 
+            $.ajax({
+                type: "POST",
+                url: "/Conim",
+                data: JSON.stringify({
+                    Option: "GET_TYPE"
+                }),
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                success: function (res) {
+                    console.log(JSON.parse(res))
+
+                    let html = ''
+                    JSON.parse(res).forEach((val) => {
+                        html = [...html, `<option value=${val.TYPE}>${val.TYPE}</option>`]
+                    })
+                    $('#sel_tipe').append(html) 
+                }
+            });
+        }
+
+         
+
+
+        const getDepartment = () => {
+            let html = ''
+            const arr = ['Support - IT', 'Support - Legal', 'Support - Finance', 'Support - Tax']
+            arr.forEach((val) => {
+                html = [...html, `<option value='${val}'>${val}</option>`]
+            })
+            $('#sel_dept').append(html);
+        }
+        //const getNama = () => {
+        //    let html = ''
+        //    const arr = ['1203148   |   Ahmad', '12903894   |   Ricky', '5056183    |   Hendri', '12151424  |   Fico']
+        //    arr.forEach((val) => {
+        //        html = [...html, `<option value='${val}'>${val}</option>`]
+        //    })
+        //    $('#sel_nama').append(html);
+        //}
+ 
+         
+    </script>
+}

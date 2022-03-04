@@ -1,0 +1,47 @@
+﻿Conim Header ======= 
+
+Number *pk
+Type
+Tahun
+CreatedBy
+UpdatedAt
+CreatedAt
+isDeleted 
+
+
+Conim Detail ====== 
+
+Number	*FK
+Tema
+Revised		0,1,2
+CreatedAt
+UpdatedAt
+status
+
+
+Conim Users ====== 
+
+Number *FK
+NIK
+NAMA
+TYPE
+
+
+Conim Approval	===== 
+
+Number	*FK
+ApproverNIK	(NIK Approval User)
+Status	(0 = Reject, 1 = Approved)
+Notes
+
+
+Conim Log Error ====
+No *pk
+Message
+Date
+
+
+==== status
+0 = waiting approval atasan
+1 = waiting approval pic dept
+2 = waiting approval pic company
