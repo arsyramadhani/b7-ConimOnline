@@ -1,0 +1,250 @@
+﻿
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<p>@ViewBag.Id</p>*@
+<div class="row px-0">
+    <div class="col-12 col-xl-8">
+        <div class="card card-body border-0 shadow mb-4">
+            <form onsubmit="(e) => { e.preventDefault() }">
+                <div class="row mb-3">
+                    <div class="col-4 ">
+                        <div>
+                            <label for="sel_type">Tipe Conim</label>
+                            @*<select id="sel_type" class="form-control ">
+                                <option></option>
+                            </select>*@ 
+                            <input id="sel_type" class="form-control" disabled />
+                        </div>
+                    </div>
+
+                </div>
+                <hr />
+                <div id="group_singular">
+                    <div class="row mb-3" id="group_nama_user">
+                        <div class="col-8">
+                            <div>
+                                <label for="sel_group_nama_user">Nama</label>
+                                <input id="sel_group_nama_user" class="form-control" disabled />
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div>
+                                <label for="input_departemen_user">Departemen</label>
+                                <input id="input_departemen_user" class="form-control" disabled />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="group_qcc_qcp" hidden>
+                    <div class="row mb-3" id="group_nama_ketua">
+                        <div class="col-8">
+                            <div>
+                                <label for="sel_group_nama_ketua">Ketua</label>
+                                <select id="sel_group_nama_ketua" class="form-control">
+                                    <option selected></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div>
+                                <label for="display_departemen_ketua">Departemen</label>
+                                <input id="display_departemen_ketua" class="form-control" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row mb-3 " id="group_nama_fasilitator">
+                        <div class="col-8 mb-2" id="row_nama_fasilitator_1">
+                            <div>
+                                <label for="sel_group_nama_fasilitator">Fasilitator</label>
+                                <select id="sel_group_nama_fasilitator" class="form-control">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-4 mb-2" id="row_display_departemen_fasilitator_1">
+                            <div>
+                                <label for="display_departemen_fasilitator">Departemen</label>
+                                <input id="display_departemen_fasilitator" class="form-control" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3" id="group_btn_qcc_qcp_fasilitator">
+                        <div class="col-md-12 d-inline-flex justify-content-start gap-2">
+                            <button id="btnAddFasilitator" type="button" class="btn btn-primary btn-sm ">
+                                Tambah Fasilitator
+                            </button>
+                            <button id="btnRemoveFasilitator" type="button" class="btn  btn-primary btn-sm ">
+                                Hapus Fasilitator
+                            </button>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row mb-3" id="group_nama_anggota">
+                        <div class="col-8 mb-2" id="row_nama_anggota_1">
+                            <div>
+                                <label for="sel_group_nama_anggota">Anggota</label>
+                                <select id="sel_group_nama_anggota" class="form-control">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-4 mb-2" id="row_display_departemen_anggota_1">
+                            <div>
+                                <label for="display_departemen_anggota">Departemen</label>
+                                <input id="display_departemen_anggota" class="form-control" disabled />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3" id="group_btn_qcc_qcp">
+                        <div class="col-md-12 d-inline-flex justify-content-start gap-2">
+                            <button id="btnAddAnggota" type="button" class="btn  btn-primary btn-sm ">
+                                Tambah Anggota
+                            </button>
+                            <button id="btnRemoveAnggota" type="button" class="btn  btn-primary btn-sm">
+                                Hapus Anggota
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class=" ">
+                        <label for="temaConim">Tema Conim</label>
+                        <textarea disabled class="form-control" placeholder="Enter your message..." id="temaConim" rows="5"></textarea>
+                    </div>
+                </div>
+                <hr />
+                <div class="row mb-3" id="show_upload" hidden>
+                    <div class="col-md-9 ">
+                        <div class="">
+                            <label for="fileUpload" class="form-label">Upload File Conim</label>
+                            <input class="form-control" type="file" id="fileUpload">
+                            <small id="fileUpload" class="form-text text-muted text-italic">*Format file adalah xlsx/docx, Maks: 5mb</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 ">
+                        <div class="">
+                            <div class="mt-4"></div>
+                            @*<button class="btn btn-gray-800 mt-2  animate-up-2" style="width: 100%">Upload</button>*@
+                            <button id="btnUpload" type="button" class="btn mt-2 btn-primary d-inline-flex align-items-center">
+                                Upload
+                                <svg class="icon icon-xxs ms-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2 9.5A3.5 3.5 0 005.5 13H9v2.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 15.586V13h2.5a4.5 4.5 0 10-.616-8.958 4.002 4.002 0 10-7.753 1.977A3.5 3.5 0 002 9.5zm9 3.5H9V8a1 1 0 012 0v5z" clip-rule="evenodd"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3" id="show_filename">
+                    <div class="col-md-12 ">
+                        <label class="form-label">Attachment</label>
+                        <div class="card mb-2">
+                            <div class="card-body d-flex align-items-center justify-content-between px-3 py-3">
+                                <span id="displayFileName">Teste</span>
+                                @*<button class="btn btn-primary btn-sm" id="btn_deleteFile">Delete</button>*@
+                            </div>
+                        </div>
+                        <div class="card mb-2">
+                            <div class="card-body d-flex align-items-center justify-content-between px-3 py-3">
+                                <span id="displayFileName">Teste</span>
+                                @*<button class="btn btn-primary btn-sm" id="btn_deleteFile">Delete</button>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*<div class="mt-3">
+                    <button class="btn btn-gray-800 mt-2 animate-up-2" type="submit" id="btnSubmit">Simpan</button>
+                    <button class="btn btn-yellow-100 mt-2 animate-up-2" type="reset" id="btnReset">Reset</button>
+                </div>*@
+            </form>
+        </div>
+    </div>
+    <div class="col-12 col-xl-4">
+        <div class="row">
+            <div class="col-12  ">
+                <div class="card shadow border-0 text-left p-0">
+                    <div class="card-body ">
+                        <h5 class="h5">Status</h5>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if (Initialize()) {
+                const CNM_Number = '@ViewBag.CNM_Number'
+                let isLoading = true 
+
+                // make sure data is loaded
+                $.when((getConimData(CNM_Number))).done((response) => {
+                    let res = JSON.parse(response)[0]
+
+                    console.log(res)
+                    $('#sel_type').val(res.CNM_Type)
+
+                    if (res.CNM_Type === 'QCC' && res.CNM_Type === 'QCP') {
+                        
+                    } else {
+                       
+                        $('#sel_group_nama_user').val(res.CNM_NAMA)
+                        $('#input_departemen_user').val(res.CNM_Departemen)
+                       
+                    }
+                    $('#temaConim').val(res.CNM_Tema)
+                    
+
+                })
+            }
+        });
+        const Initialize = () => {
+            // To initialize Config data
+            //$('#sel_type').select2({
+            //    minimumResultsForSearch: Infinity,
+            //    placeholder: "Pilih Tipe Conim"
+            //});
+            //$('#sel_dept').select2({
+            //    placeholder: "Pilih Departemen"
+            //});
+            //$('#sel_group_nama_user').select2({
+            //    tags: true,
+            //    insertTag: function (data, tag) {
+            //        data.push(tag);
+            //    }
+            //});
+            //$('[id^=sel_group_nama_]').select2({
+            //    tags: true,
+            //    placeholder: "Input Nama",
+            //    insertTag: function (data, tag) {
+            //        data.push(tag);
+            //    }
+            //});
+
+            userInfo = JSON.parse(sessionStorage.getItem("userinfo"))
+
+            return true
+        } 
+        const getConimData = (Number) => {
+            return $.ajax({
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                type: "POST",
+                url: "/Conim",
+                data: JSON.stringify({
+                    Option: "GET_LAPORAN_BY_ID",
+                    Number: Number
+                }),
+                success: function (response) {
+                    return JSON.parse(response)
+                }
+            });
+        }
+    </script>
+    }

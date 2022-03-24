@@ -8,6 +8,7 @@ using ConimOnline.DAL;
 using Newtonsoft.Json;
 using ConimOnline.Models;
 using Dapper;
+using System.Web.Http;
 
 namespace ConimOnline.Controllers
 {
@@ -17,8 +18,8 @@ namespace ConimOnline.Controllers
         readonly ConimDAL conimDAL = new ConimDAL();
 
         readonly string conString = ConfigurationManager.ConnectionStrings["CONIM"].ConnectionString;
-        readonly string SP_CONIM_ONLINE = "[DBO].[SP_CONIM_ONLINE]";
-        readonly string ConimConn = "CONIM";
+        ////readonly string SP_CONIM_ONLINE = "[DBO].[SP_CONIM_ONLINE]";
+        ////readonly string ConimConn = "CONIM";
 
         // GET: Laporan
         public ActionResult Index()
@@ -38,21 +39,27 @@ namespace ConimOnline.Controllers
         {
             return View();
         }
+        public ActionResult Details([FromUri] string id)
+
+        {
+            ViewBag.CNM_Number = id;
+            return View();
+        }
 
         #region DataFetching
 
-        [Route("Conim")]
-        public ActionResult Conim(ConimModel conimModel, AuthModel authModel)
-        {
-            var dictionary = new Dictionary<string, object>
-            {
-                { "OPTION", conimModel.Option },
-                { "USERAD", authModel.Username },
-            };
+        //[Route("Conim")]
+        //public ActionResult Conim(ConimModel conimModel, AuthModel authModel)
+        //{
+        //    var dictionary = new Dictionary<string, object>
+        //    {
+        //        { "OPTION", conimModel.Option },
+        //        { "USERAD", authModel.Username },
+        //    };
 
-            var parameters = new DynamicParameters(dictionary);
-            return Json(conimDAL.StoredProcedure(parameters, SP_CONIM_ONLINE, ConimConn));
-        }
+        //    var parameters = new DynamicParameters(dictionary);
+        //    return Json(conimDAL.StoredProcedure(parameters, SP_CONIM_ONLINE, ConimConn));
+        //}
         #endregion
     }
 }

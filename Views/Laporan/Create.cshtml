@@ -1,231 +1,990 @@
 ﻿
 @{
-    ViewBag.Title = "Buat Laporan Conim";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Buat Laporan Conim";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
-<div class="row px-2"> 
-    <div class="col-12 col-xl-8">
-        <div class="card card-body border-0 shadow mb-4">
-            <form onsubmit="(e) => { e.preventDefault() }">
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <div>
-                            <label for="sel_tipe">Tipe Conim</label>
-                            <select id="sel_tipe" class="form-control ">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div>
-                            <label for="sel_dept">Departemen</label>
-                            <select id="sel_dept" class="form-control"> 
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-12">
-                        <div>
-                            <label for="sel_nama">Nama</label>
-                            <select id="sel_nama" class="form-control">
-                            </select>
-                            <small id="namaHelp" class="form-text text-muted text-italic  ">*Ketik manual jika nama tidak tersedia</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-3" id="row_anggota" hidden> 
-                    <div class="col-md-12 mb-3">
-                        <div>
-                            <label for="sel_anggota1">Anggota 1</label>
-                            <select id="sel_anggota1" class="form-control">
-                            </select>
-                            <small id="namaHelp" class="form-text text-muted text-italic  ">*Ketik manual jika nama tidak tersedia</small>
-                        </div>
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <div>
-                            <label for="sel_anggota2">Anggota 2</label>
-                            <select id="sel_anggota2" class="form-control">
-                            </select>
-                            <small id="namaHelp" class="form-text text-muted text-italic  ">*Ketik manual jika nama tidak tersedia</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class=" ">
-                        <label for="textarea">Tema Conim</label>
-                        <textarea class="form-control" placeholder="Enter your message..." id="textarea" rows="4"></textarea>
-                    </div>
-                </div>
-                <hr />
-                <div class="row mb-3">
-                    <div class="col-md-9 ">
-                        <div class="">
-                            <label for="fileUpload" class="form-label">Upload File Conim</label>
-                            <input class="form-control" type="file" id="fileUpload"> 
-                            <small id="fileUpload" class="form-text text-muted text-italic">*Format file adalah xlsx/docx, Maks: 5mb</small>
-                        </div>
-                    </div>
-                    <div class="col-md-3 ">
-                        <div class="">
-                            <div class="mt-4"></div>
-                            @*<button class="btn btn-gray-800 mt-2  animate-up-2" style="width: 100%">Upload</button>*@
-                            <button id="btnUpload"  type="button" class="btn mt-2 btn-primary d-inline-flex align-items-center">
-                                Upload
-                                <svg class="icon icon-xxs ms-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2 9.5A3.5 3.5 0 005.5 13H9v2.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 15.586V13h2.5a4.5 4.5 0 10-.616-8.958 4.002 4.002 0 10-7.753 1.977A3.5 3.5 0 002 9.5zm9 3.5H9V8a1 1 0 012 0v5z" clip-rule="evenodd"></path></svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-12">
-                    </div>
-                </div>
-                <div class="mt-3">
-                    <button class="btn btn-gray-800 mt-2 animate-up-2" type="submit">Simpan</button>
-                    <button class="btn btn-yellow-100 mt-2 animate-up-2" type="reset">Reset</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="col-12 col-xl-4">
-        <div class="row">
-            <div class="col-12  ">
-                <div class="card shadow border-0 text-left p-0">
-                    <div class="card-body ">
-                        <h5 class="h6 ">Cara Membuat Conim</h5>
-                        <p>1. Pilih Tipe Conim <br /> 2. Pilih Departemen</p> 
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="row px-0"> 
+	<div class="col-12 col-xl-8">
+		<div class="card card-body border-0 shadow mb-4">
+			<form onsubmit="(e) => { e.preventDefault() }">
+				<div class="row mb-3">
+					<div class="col-4 ">
+						<div>
+							<label for="sel_type">Tipe Conim</label>
+							<select id="sel_type" class="form-control ">
+								<option></option>
+							</select>
+						</div>
+					</div>
+
+				</div>
+				<hr />
+				<div id="group_singular">
+					<div class="row mb-3" id="group_nama_user">
+						<div class="col-8">
+							<div>
+								<label for="sel_group_nama_user">Nama</label>
+								<select id="sel_group_nama_user" class="form-control">
+									<option></option>
+								</select> 
+							</div>
+						</div>
+						<div class="col-4">
+							<div>
+								<label for="input_departemen_user">Departemen</label>
+								<input id="input_departemen_user" class="form-control" disabled />
+							</div>
+						</div>
+					</div>
+				</div>  
+				 
+				<div id="group_qcc_qcp" hidden>
+					<div class="row mb-3" id="group_nama_ketua">
+						<div class="col-8">
+							<div>
+								<label for="sel_group_nama_ketua">Ketua</label>
+								<select id="sel_group_nama_ketua" class="form-control">
+									<option selected></option>
+								</select>
+							</div>
+						</div>
+						<div class="col-4">
+							<div>
+								<label for="display_departemen_ketua">Departemen</label>
+								<input id="display_departemen_ketua" class="form-control" disabled  />
+							</div>
+						</div>
+					</div>
+					<hr />	
+					<div class="row mb-3 " id="group_nama_fasilitator">
+						<div class="col-8 mb-2" id="row_nama_fasilitator_1">
+							<div>
+								<label for="sel_group_nama_fasilitator">Fasilitator</label>
+								<select id="sel_group_nama_fasilitator" class="form-control">
+									<option></option>
+								</select>
+							</div>
+						</div>
+						<div class="col-4 mb-2" id="row_display_departemen_fasilitator_1">
+							<div>
+								<label for="display_departemen_fasilitator">Departemen</label>
+								<input id="display_departemen_fasilitator" class="form-control" disabled />
+							</div>
+						</div>
+					</div>
+					<div class="row mb-3" id="group_btn_qcc_qcp_fasilitator">
+						<div class="col-md-12 d-inline-flex justify-content-start gap-2">
+							<button id="btnAddFasilitator" type="button" class="btn btn-primary btn-sm ">
+								Tambah Fasilitator
+							</button>
+							<button id="btnRemoveFasilitator" type="button" class="btn  btn-primary btn-sm ">
+								Hapus Fasilitator
+							</button>
+						</div>
+					</div>
+					<hr />
+					<div class="row mb-3" id="group_nama_anggota">
+						<div class="col-8 mb-2" id="row_nama_anggota_1">
+							<div>
+								<label for="sel_group_nama_anggota">Anggota</label>
+								<select id="sel_group_nama_anggota" class="form-control">
+									<option></option>
+								</select>
+							</div>
+						</div>
+						<div class="col-4 mb-2" id="row_display_departemen_anggota_1">
+							<div>
+								<label for="display_departemen_anggota">Departemen</label>
+								<input id="display_departemen_anggota" class="form-control" disabled />
+							</div>
+						</div>
+					</div>
+					<div class="row mb-3" id="group_btn_qcc_qcp">
+						<div class="col-md-12 d-inline-flex justify-content-start gap-2">
+							<button id="btnAddAnggota" type="button" class="btn  btn-primary btn-sm ">
+								Tambah Anggota
+							</button>
+							<button id="btnRemoveAnggota" type="button" class="btn  btn-primary btn-sm" >
+								Hapus Anggota
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<div class=" ">
+						<label for="temaConim">Tema Conim</label>
+						<textarea class="form-control" placeholder="Enter your message..." id="temaConim" rows="5"></textarea>
+					</div>
+				</div>
+				<hr />
+				<div class="row mb-3" id="show_upload">
+					<div class="col-md-9 ">
+						<div class="">
+							<label for="fileUpload" class="form-label">Upload File Conim</label>
+							<input class="form-control" type="file" id="fileUpload">
+							<small id="fileUpload" class="form-text text-muted text-italic">*Format file adalah xlsx/docx, Maks: 5mb</small>
+						</div>
+					</div>
+					<div class="col-md-3 ">
+						<div class="">
+							<div class="mt-4"></div>
+							@*<button class="btn btn-gray-800 mt-2  animate-up-2" style="width: 100%">Upload</button>*@
+							<button id="btnUpload" type="button"  class="btn mt-2 btn-primary d-inline-flex align-items-center">
+								Upload
+								<svg class="icon icon-xxs ms-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2 9.5A3.5 3.5 0 005.5 13H9v2.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 15.586V13h2.5a4.5 4.5 0 10-.616-8.958 4.002 4.002 0 10-7.753 1.977A3.5 3.5 0 002 9.5zm9 3.5H9V8a1 1 0 012 0v5z" clip-rule="evenodd"></path></svg>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="row mb-3" id="show_filename" hidden>
+					<div class="col-md-12 ">
+						<label for="fileUpload" class="form-label">Upload File Conim</label>
+						<div class="card">
+							<div class="card-body d-flex align-items-center justify-content-between px-3 py-3">
+								<span id="displayFileName"></span>
+								<button class="btn btn-primary btn-sm" id="btn_deleteFile">Delete</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="mt-3">
+					<button class="btn btn-gray-800 mt-2 animate-up-2" type="submit" id="btnSubmit">Simpan</button> 
+					<button class="btn btn-yellow-100 mt-2 animate-up-2" type="reset" id="btnReset">Reset</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="col-12 col-xl-4">
+		<div class="row">
+			<div class="col-12  ">
+				<div class="card shadow border-0 text-left p-0">
+					<div class="card-body ">
+						<h5 class="h6 ">Instruction</h5>
+						 
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 @section scripts { 
 
-    <script type="text/javascript">   
-         
-         
-        let state = {
-            tipe: 'A3R',
-            pathFile: ''
-        }
+	<script type="text/javascript">
+
+		let userInfo = null
+		let DTO = {
+			Type: null,
+			filePath: null,
+			fileName: null,
+			fileNameAlias: null,
+			creator: JSON.parse(localStorage.getItem("userinfo")).USERAD,
+			conimId: null,
+			userId: JSON.parse(localStorage.getItem("userinfo")).NIK,
+			tema: null,
+			QCC: null,
+			NIK: null,
+			UserName: null,
+			Department: null,
+			Flag: null,
+			Branch: null,
+			SuperiorId: null,
+			PicApproval: null,
+			PicNote: null,
+			Subdept: null,
+			ListAnggota: [],
+			ListFasilitator: []
+		}
+
+		let listEmployees = []
+		let listFasilitator =  []
+		let listConimTypes = []
+
+		$(document).ready(function () {
+			// Initialize config for select2
+			if (Initialize()) { 
+			// After select components are loaded, fetch the data and store it into list array only if the array are empty
+			listConimTypes.length === 0 && getTipeConim()
+			listEmployees.length === 0 && getEmployees.All()
+				console.log(window.location)
+
+			// Select tipe conim, add fasilitator and anggota if conim_type are QCP or QCP
+			$('#sel_type').on('select2:select', function (e) {
+				const tipe = e.params.data.id
+				if (tipe === 'QCP' || tipe === 'QCC') {
+					$('#group_qcc_qcp').attr('hidden', false)
+					$('#group_singular').attr('hidden', 'hidden')
+
+					if (listEmployees.length > 0) {
+						// Fill Ketua
+						populateSelectData($('#sel_group_nama_ketua'), listEmployees.map((val) => {
+							return {
+								id: val.nik,
+								display: val.username
+							}
+						}))
+
+						// Fill Anggota
+						populateSelectData($('#sel_group_nama_anggota'), listEmployees.map((val) => {
+							return {
+								id: val.nik,
+								display: val.username
+							}
+						}))
+
+						$.when(getEmployees.fasilitator()).done((res) => {
+							//console.log(res)
+							populateSelectData($('#sel_group_nama_fasilitator'), listFasilitator.map((val) => {
+								return {
+									id: val.nik,
+									display: val.username
+								}
+							}))
+						})
+
+					}
+
+					// hanya berjalan ketika tipe QCP / QCC
+					['fasilitator', 'anggota', 'ketua'].map((val) => {
+						$('#sel_group_nama_' + val).on('select2:select', function (e) {
+							e.preventDefault()
+							const id = e.params.data.id
+							const dept = listEmployees.find((data) => data.nik === id).org_group_name
+
+							//console.log(dept)
+							$('#display_departemen_' + val).val(dept);
+						});
+					})
+
+				} else {
+					$('#group_qcc_qcp').attr('hidden', 'hidden')
+					$('#group_singular').attr('hidden', false)
+				}
+				DTO.Type = $('#sel_type').val()
+			});
+
+			$('#sel_dept').on('select2:select', function (e) {
+				DTO.Department = $('#sel_dept').val()
+			});
+
+			// add new Anggota Row on QCP/QPC
+			$('#btnAddAnggota').on('click', function (e) {
+					e.preventDefault();
+					let res = $('#group_nama_anggota').find('[id^=row_nama_anggota]');
+
+					if (res.length <= 4) {
+						const newId = uid()
+						addRowAnggota(newId)
+						$(`#sel_group_nama_anggota_${newId}`).select2({
+							placeholder: "Input Nama"
+						});
+
+						$(`#sel_group_nama_anggota_${newId}`).on('select2:select', function (e) {
+							e.preventDefault()
+							const id = e.params.data.id
+							const dept = listEmployees.find((data) => data.nik === id).org_group_name
+							$(`#display_departemen_anggota_${newId}`).val(dept);
 
 
-        $(document).ready(function () {
-            // Config
-            $('#sel_tipe').select2({ 
-                minimumResultsForSearch: Infinity
-            });
-            $('#sel_dept').select2({ 
-            });
+							//DTO.listAnggota = [...DTO.listAnggota, {
+							//	nik: id,
+							//	type: 'ANGGOTA'
+							//}]
+						});
+					} else {
+						Swal.fire({
+							icon: 'error',
+							text: 'Anggota maksimal hanya bisa 5 orang'
+						})
+					}
+				});
 
-            $('#sel_nama').select2({
-                tags: true,
-                insertTag: function (data, tag) {
-                    // Insert the tag at the end of the results
-                    data.push(tag);
-                }
-            });
-            $('[id^=sel_anggota]').select2({
-                tags: true,
-                placeholder: "Input Nama Anggota"
-            }); 
-             
-
-            getTipeConim()
-            //getNama()
-            getDepartment()
-            // On Select Conim
-            $('#sel_tipe').on('select2:select', function (e) {
-                const tipe = e.params.data.id
-                tipe === 'SS' ? $('#row_anggota').attr('hidden', false) : $('#row_anggota').attr('hidden', 'hidden')
-                
-            });
-            $('#sel_nama').on('select2:select', function (e) {
-                const data = e.params.data.id
-                console.log(data)
-            });
-             
-            $('#fileUpload').change(function (e) {
-                e.preventDefault(); 
-                const formData = new FormData()
-                formData.append('file', $("#fileUpload")[0].files[0]) 
-                const file = formData.get('file')
-                const fileType = file.name.split('.')[1].toLowerCase()
-
-                // application/vnd.ms-excel
-                // application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-                // application/msword
-                // application/vnd.openxmlformats-officedocument.wordprocessingml.document
-                console.log(fileType) 
-
-                if (!validateFile(fileType)) {
-                    Swal.fire({
-                        icon: 'error',
-                        text: 'Hanya diperbolehkan file dengan extensi .docx/.xslx'
-                    })
-
-                    $(this).val(null);
-                    formData.delete('file')
-                }
-
-            });
-        });
-
-        // Validate File Type
-        const validateFile = (fileType) => {
-            var allowedExtensions =
-                /(\.doc|\.docx|\.xls|\.xlsx)$/i;
-             
-            return !allowedExtensions.exec('.' + fileType) ? false : true 
-
-        }
-
-        // Fetch Conim Types
-        const getTipeConim = () => { 
-            $.ajax({
-                type: "POST",
-                url: "/Conim",
-                data: JSON.stringify({
-                    Option: "GET_TYPE"
-                }),
-                dataType: "json",
-                contentType: 'application/json; charset=utf-8',
-                success: function (res) {
-                    console.log(JSON.parse(res))
-
-                    let html = ''
-                    JSON.parse(res).forEach((val) => {
-                        html = [...html, `<option value=${val.TYPE}>${val.TYPE}</option>`]
-                    })
-                    $('#sel_tipe').append(html) 
-                }
-            });
-        }
-
-         
+			$('#btnAddFasilitator').on('click', function (e) {
+				e.preventDefault();
+				let res = $('#group_nama_fasilitator').find('[id^=row_nama_fasilitator]');
+				console.log(res.length)
+				if (res.length < 2) {
+					const newId = uid()
+					addRowFasilitator(newId) 
+					// Populate select fasilitator
+					populateSelectData($(`#sel_group_nama_fasilitator_${newId}`), listFasilitator.map((val) => {
+						return {
+							id: val.nik,
+							display: val.username
+						}
+					}))
 
 
-        const getDepartment = () => {
-            let html = ''
-            const arr = ['Support - IT', 'Support - Legal', 'Support - Finance', 'Support - Tax']
-            arr.forEach((val) => {
-                html = [...html, `<option value='${val}'>${val}</option>`]
-            })
-            $('#sel_dept').append(html);
-        }
-        //const getNama = () => {
-        //    let html = ''
-        //    const arr = ['1203148   |   Ahmad', '12903894   |   Ricky', '5056183    |   Hendri', '12151424  |   Fico']
-        //    arr.forEach((val) => {
-        //        html = [...html, `<option value='${val}'>${val}</option>`]
-        //    })
-        //    $('#sel_nama').append(html);
-        //}
- 
-         
-    </script>
+					$(`#sel_group_nama_fasilitator_${newId}`).select2({
+						placeholder: "Input Nama"
+					});
+
+					$(`#sel_group_nama_fasilitator_${newId}`).on('select2:select', function (e) {
+						e.preventDefault()
+						const id = e.params.data.id
+						const dept = listEmployees.find((data) => data.nik === id).org_group_name
+						console.log($(`#display_departemen_fasilitator_${newId}`)) 
+
+						$(`#display_departemen_fasilitator_${newId}`).val(dept); 
+						//DTO.listFasilitator = [...DTO.listFasilitator, id]
+					});
+				} else {
+					Swal.fire({
+						icon: 'error',
+						text: 'Fasilitator maksimal hanya bisa 2 orang'
+					})
+				}
+			});
+
+			// Remove anggota row for QCP/QCC
+			$('#btnRemoveAnggota').on('click', function (e) {
+				e.preventDefault()
+				let res = $('#group_nama_anggota').find('[id^=row_nama_anggota_]')
+				let dept = $('#group_nama_anggota').find('[id^=row_display_departemen_anggota_]')
+
+				if (res.length > 1) {
+					res = res.last().attr('id');
+					dept = dept.last().attr('id');
+
+					$('#'+res).remove();
+					$('#' + dept).remove();
+				}
+			});
+
+				// Remove anggota row for QCP/QCC
+			$('#btnRemoveFasilitator').on('click', function (e) {
+				e.preventDefault()
+				// row_nama_fasilitator_
+				let res = $('#group_nama_fasilitator').find('[id^=row_nama_fasilitator_]')
+				let dept = $('#group_nama_fasilitator').find('[id^=row_display_departemen_fasilitator_]') 
+				if (res.length > 1) {
+					res = res.last().attr('id');
+					dept = dept.last().attr('id');
+					$('#' + res).remove();
+					$('#' + dept).remove();
+				}
+			});
+				 
+			$('#sel_group_nama_user').on('select2:select', function (e) {
+				e.preventDefault()
+				const id = e.params.data.id
+				const dept = listEmployees.find((data) => data.nik === id)?.org_group_name
+				$('#input_departemen_user').val(dept ? dept : '-'); 
+				DTO.NIK = id 
+				DTO.UserName = e.params.data.text
+				DTO.Department = dept
+				if (DTO.Type !== 'QCC' || DTO.Type !== 'QCP') {
+					getSuperior(id)
+				}
+			});
+
+			// To validate when form upload changed, returns nothing if file are expected
+			$('#fileUpload').change(function (e) {
+				e.preventDefault();
+				const formData = new FormData()
+				formData.append('file', $("#fileUpload")[0].files[0])
+				const file = formData.get('file')
+				const fileType = file.name.split('.')[1].toLowerCase()
+				const fileSize = file.size / 1048576 * 1
+
+				// application/vnd.ms-excel
+				// application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+				// application/msword
+				// application/vnd.openxmlformats-officedocument.wordprocessingml.document
+				const validateFileUpload = () => {
+					// set maks file size into Mb
+					const MAX_FILE_SIZE = 5
+					let res = true
+
+					if (!validateFile(fileType)) {
+						Swal.fire({
+							icon: 'error',
+							text: 'Hanya diperbolehkan file dengan extensi .docx/.xslx'
+						})
+						res = false
+					}
+					if (fileSize > MAX_FILE_SIZE) {
+						Swal.fire({
+							icon: 'error',
+							text: 'Ukuran file terlalu besar'
+						})
+						res = false
+					}
+
+					return res
+				}
+
+				if (!validateFileUpload()) {
+					$(this).val(null);
+					formData.delete('file')
+					return
+				}
+				return
+			});
+
+			// Actually upload the file attachment. for validation sees #fileUpload
+			$('#btnUpload').on('click', function (e) {
+				e.preventDefault()
+				const formData = new FormData()
+				formData.append("file", document.getElementById("fileUpload").files[0])
+				const file = formData.get('file')
+
+				if (file === 'undefined') {
+					Swal.fire({
+						icon: 'error',
+						text: 'Pilih file terlebih dahulu'
+					})
+					return
+				}
+				// Confirm before upload attachment
+				Swal.fire({
+					title: 'Upload Attachment Conim?',
+					icon: 'question',
+					showCancelButton: true
+				}).then((result) => {
+					// Upload file if confirmed
+					if (result.isConfirmed) {
+						$.ajax({
+							type: "POST",
+							url: "/Conim/Attachment",
+							data: formData,
+							dataType: "json",
+							contentType: false,
+							processData: false,
+							success: function (res) {
+								const result = JSON.parse(res)
+								if (result.result) {
+									DTO.fileName = result.fileName
+									DTO.filePath = result.path
+									DTO.fileNameAlias = result.alias
+
+									Swal.fire({
+										icon: 'success',
+										title: 'Attachment Berhasil Di Upload',
+										showConfirmButton: false,
+										timer: 1500
+									})
+								}
+							},
+							error: (err) => {
+								console.log(err)
+							}
+						}).then((res) => {
+							$('#fileUpload').val(null);
+							formData.delete('file')
+
+							DTO.fileNameAlias && showFileName.show(DTO.fileNameAlias)
+						});
+
+					} else {
+						return
+					}
+				})
+			});
+
+			// update the DTO.Tema everytime the textarea changed,
+			$('#temaConim').on('change', function () {
+				DTO.tema = $('#temaConim').val()
+			});
+			}
+			// Submit Laporan, accepted if already have attachment
+			$('#btnSubmit').on('click', function (e) {
+				e.preventDefault()  
+
+				// to validate all submit based on conim types
+				if (validateSubmit()) {  
+					swal.fire({
+						title: 'Submit Laporan Conim?',
+						icon: 'question',
+						showCancelButton: true
+					}).then((result) => {
+						console.log(result)
+						if (result.isConfirmed) {
+
+							$.ajax({
+								type: "POST",
+								url: "/Conim",
+								data: JSON.stringify({
+									Option: "POST_LAPORAN",
+									UserName: DTO.creator,
+									Type: DTO.Type,
+									NIK: DTO.NIK,
+									Name: DTO.UserName,
+									Department: DTO.Department,
+									Subdept: DTO.Subdept,
+									Tema: DTO.tema,
+									UserId: DTO.NIK,
+									Subdept: " ",
+									Filename: DTO.fileName,
+									Filepath: DTO.filePath,
+									ListAnggota: JSON.stringify(DTO.ListAnggota),
+									ListFasilitator: JSON.stringify(DTO.ListFasilitator.map((val) => {
+										return {
+											NIK: val
+										}
+									}))
+								}),
+								dataType: "json",
+								contentType: 'application/json; charset=utf-8',
+								success: function (response) {
+									const result = JSON.parse(response)[0] 
+									//console.log()
+									if (result.CNM_Number) {
+										Swal.fire({ 
+											icon: 'success',
+											title: 'Berhasil submit laporan conim',
+											showConfirmButton: false,
+											timer: 2000
+										})
+
+										setTimeout(() => { 
+											window.location.href = window.location.origin + window.location.pathname.toLowerCase().replace('/create', '/details?id=' + result.CNM_Number)
+										}, 1500)
+									} 
+								}
+							}); 
+						}
+					})
+
+				}
+				 
+			});
+
+			$('#btn_deleteFile').on('click', function (e) {
+				e.preventDefault()
+
+				Swal.fire({
+					@*title: 'Are you sure?',*@
+					text: "Anda yakin akan menghapus attachment ini?",
+					icon: 'warning',
+					showCancelButton: true
+					@*confirmButtonText: 'Yes, delete it!'*@
+				}).then((result) => {
+					if (result.isConfirmed) {
+						showFileName.hide()
+						DTO.fileName = null
+						DTO.filePath = null
+						DTO.fileNameAlias = null
+						Swal.fire({
+
+							icon: 'success',
+							title: 'Attachment Berhasil Dihapus',
+							showConfirmButton: false,
+							timer: 1500
+						})
+					}
+				})
+
+
+			});
+
+		});
+
+		const Initialize = () => {
+			// To initialize Config data
+			$('#sel_type').select2({
+				minimumResultsForSearch: Infinity,
+				placeholder: "Pilih Tipe Conim"
+			});
+			$('#sel_dept').select2({
+				placeholder: "Pilih Departemen"
+			});
+			$('#sel_group_nama_user').select2({
+				tags: true,
+				insertTag: function (data, tag) {
+					data.push(tag);
+				}
+			});
+			$('[id^=sel_group_nama_]').select2({
+				tags: true,
+				placeholder: "Input Nama",
+				insertTag: function (data, tag) {
+					data.push(tag);
+				}
+			});
+
+			userInfo = JSON.parse(sessionStorage.getItem("userinfo"))
+
+			return true
+		}
+
+		// Validate File Type
+		const validateFile = (fileType) => {
+			var allowedExtensions =
+				/(\.doc|\.docx|\.xls|\.xlsx)$/i;
+
+			return !allowedExtensions.exec('.' + fileType) ? false : true
+		}
+
+		const validateType = (data) => {
+
+			let res = true
+			let message = ''
+
+			Object.keys(data).forEach(function (key) {
+				//console.log('Key : ' + key + ', Value : ' + data[key])
+				if (!data[key]) {
+					message = key + ' tidak boleh kosong'
+					res = false
+				}
+			})
+
+			if (!res) {
+				Swal.fire({
+					icon: 'error',
+					text: message
+				})
+			}
+
+			return res
+		}
+
+		const showError = (msg) => {
+			Swal.fire({
+				icon: 'error',
+				showConfirmButton: false,
+				timer: 1000,
+				//position: 'top-end', 
+				text: msg
+			})
+			return false
+		}
+
+		const validateSubmit = () => { 
+			const res = true
+			DTO.tema = $('#temaConim').val().trim()  
+
+			if (DTO.Type === 'QCP' || DTO.Type === 'QCC') {
+				DTO.ListFasilitator = []
+				DTO.ListAnggota = []
+				let dataAnggota = []
+				let dataFasilitator = []
+
+				// push dataAnggota anggota
+				$('[id^=sel_group_nama_anggota]').map((i, div) => div.id).get().forEach((val) => {
+					$('#' + val).val() !== '' && dataAnggota.push({ NIK: $('#' + val).val().trim(), Type: 'ANGGOTA' })
+
+				});
+				$('[id^=sel_group_nama_fasilitator]').map((i, div) => div.id).get().forEach((val) => {
+					$('#' + val).val() !== '' && dataFasilitator.push($('#' + val).val().trim())
+				});
+
+				DTO.ListAnggota = dataAnggota
+				DTO.ListFasilitator = dataFasilitator
+				$('#sel_group_nama_ketua').val().trim() !== '' && DTO.ListAnggota.push({
+					NIK: $('#sel_group_nama_ketua').val().trim(),
+					Type: 'KETUA'
+				});
+
+				DTO.NIK = JSON.parse(localStorage.getItem("userinfo")).NIK
+				DTO.UserName = JSON.parse(localStorage.getItem("userinfo")).USERNAME
+				DTO.Department = JSON.parse(localStorage.getItem("userinfo")).ORG_GROUP_NAME
+
+			}
+
+			//!DTO.filePath && showError('Upload file terlebih dahulu')
+			//!DTO.tema && showError('Input Tema terlebih dahulu')
+			//!DTO.filePath && showError('Pilih tipe Conim')
+			//!DTO.Type && showError('Pilih tipe Conim')
+
+			// Validasi 
+			if (!DTO.Type) {
+				return showError('Pilih Tipe Conim')
+			}
+
+			if (!DTO.tema) {
+			   return showError('Tema tidak boleh kosong')
+			}
+
+			if (!DTO.filePath || !DTO.fileName) {
+				return showError('Upload file attachment terlebih dahulu')
+			}
+
+			if (DTO.Type === 'QCP' || DTO.Type === 'QCC') { 
+				const ketua = DTO.ListAnggota.filter((val) => val.Type === 'KETUA')
+				const anggota = DTO.ListAnggota.filter((val) => val.Type === 'ANGGOTA')
+				if (ketua.length === 0) {
+					return showError('Mohon pilih ketua')
+				}
+				if (DTO.ListFasilitator.length === 0) {
+					return showError('Mohon pilih Fasilitator')
+				}
+				if (anggota.length === 0) {
+					return showError('Mohon pilih Anggota')
+				}
+
+			} else {
+				if (!DTO.NIK) {
+					return showError('Mohon pilih Nama') 
+				}
+			}
+
+			return true
+		}
+		 
+
+		const submitAttacment = (DocNumber) => {
+			return $.ajax({
+				type: "POST",
+				url: "/Conim",
+				data: JSON.stringify({
+					Option: "POST_ATTACHMENT",
+					Number: DocNumber || '',
+					Filename: DTO.fileName,
+					Filepath: DTO.filePath,
+					Name: DTO.NIK
+				}),
+				dataType: "json",
+				contentType: 'application/json; charset=utf-8',
+				success: function (response) {
+					return response
+				},
+				error: (err) => {
+					console.log(err)
+				}
+			});
+		}
+
+		const getNewId = (type) => {
+			return $.ajax({
+				type: "POST",
+				async: false,
+				url: "/Conim",
+				data: JSON.stringify({
+					Option: "GENERATE_ID",
+					Type: type,
+				}),
+				dataType: "json",
+				contentType: 'application/json; charset=utf-8',
+				success: function (response) {
+					return response
+				},
+				error: (err) => {
+					console.log(err)
+				}
+			})
+		}
+
+		// Fetch Conim Types
+		const getTipeConim = () => {
+			return $.ajax({
+				type: "POST",
+				url: "/Conim",
+				data: JSON.stringify({
+					Option: "GET_TYPE"
+				}),
+				dataType: "json",
+				contentType: 'application/json; charset=utf-8',
+				success: function (res) {
+					const result = JSON.parse(res)
+					listConimTypes = result
+					return true
+				},
+				error: (err) => {
+					console.log(err)
+					return false
+				}
+			}).then((res) => {
+				populateSelectData($('#sel_type'), listConimTypes.map((val) => {
+					return {
+						id: val.type,
+						display: val.type,
+						option: val.description
+					}
+				}))
+			})
+		}
+
+		// Generate UID for row Anggota
+		const uid = () => {
+			return Date.now().toString(36) + Math.random().toString(36).substr(2);
+		}
+
+		const addRowAnggota = (id) => {
+			let html = `<div class="col-8 mb-2" id="row_nama_anggota_${id}">
+							<div>
+								<label for="sel_group_nama_anggota_${id}">Anggota</label>
+								<select id="sel_group_nama_anggota_${id}" class="form-control">
+									<option></option>`
+			html += listEmployees.map((data) => (`<option value=${data.nik}>${data.username}</option>`))
+			html +=				`</select>
+							</div>
+						</div>
+					<div class="col-4 mb-2" id=row_display_departemen_anggota_${id}>
+						<div>
+							<label for="display_departemen_anggota_${id}">Departemen</label>
+							<input id="display_departemen_anggota_${id}" class="form-control" disabled />
+						</div>
+					</div>`
+
+			$('#group_nama_anggota').append(html);
+
+		}
+
+		const addRowFasilitator = (id) => {
+			let html = `<div class="col-8 mb-2" id="row_nama_fasilitator_${id}">
+							<div>
+								<label for="sel_group_nama_fasilitator_${id}">Fasilitator</label>
+								<select id="sel_group_nama_fasilitator_${id}" class="form-control">
+									<option></option>
+								</select>
+							</div>
+						</div>`
+
+			let fas = `<div class="col-4 mb-2" id=row_display_departemen_fasilitator_${id}>
+							<div>
+								<label for="display_departemen_fasilitator_${id}">Departemen</label>
+								<input id="display_departemen_fasilitator_${id}" class="form-control" disabled />
+							</div>
+						</div>`
+
+			$('#group_nama_fasilitator').append(html, fas);
+
+			
+		}
+
+		// fetch list of departments, returning an array and assign it to listDepartments
+		// only called once every page loaded
+		const getDepartment = () => {
+			$.ajax({
+				type: "POST",
+				url: "/Conim",
+				data: JSON.stringify({
+					Option: "GET_DEPARTMENT"
+				}),
+				dataType: "json",
+				contentType: 'application/json; charset=utf-8',
+				success: function (res) {
+					const result = JSON.parse(res)
+					listDepartment = result
+				},
+				error: (err) => {
+					console.log(err)
+				}
+			}).then(() => {
+				populateSelect({
+					selector: $(`#sel_dept`),
+					listData: listDepartment.map((data) => {
+						return {
+							id: data.DEPARTMENT,
+							display: data.DEPARTMENT
+						}
+					})
+				})
+				$(`#sel_dept`).val(userInfo.ORG_GROUP_NAME).change()
+				DTO.Department = userInfo.ORG_GROUP_NAME
+			})
+		}
+
+		// Fetch list of employees data, returns huge array.
+		// Then we store it to listEmployee so we dont have to unnecesary refetch the data again
+		const getEmployees = {
+			All: () => {
+				return $.ajax({
+					type: "POST",
+					url: "/Conim",
+					data: JSON.stringify({
+						Option: "GET_EMPLOYEES"
+					}),
+					dataType: "json",
+					contentType: 'application/json; charset=utf-8',
+					success: function (res) {
+						listEmployees = JSON.parse(res)
+						return true
+					},
+					error: (err) => {
+						console.error(err)
+						return false
+					}
+				}).then((res) => {
+					populateSelectData($('#sel_group_nama_user'), listEmployees.map((val) => {
+						return {
+							id: val.nik,
+							display: val.username
+						}
+					}))
+				});
+			},
+			fasilitator: () => {
+				return $.ajax({
+					type: "POST",
+					url: "/Conim",
+					data: JSON.stringify({
+						Option: "GET_FASILITATOR"
+					}),
+					dataType: "json",
+					contentType: 'application/json; charset=utf-8',
+					success: function (res) {
+						listFasilitator = JSON.parse(res)
+						return true
+					},
+					error: (err) => {
+						console.error(err)
+						return false
+					}
+				})
+			}
+		}
+
+		const populateSelectData = (selector, data) => {
+			const option = data.map((val) => [`<option value="${val.id}">${val.display}</option>`])
+			let html = [['<option selected></option>'], ...option].join(' ')
+			selector.append(html)
+		}
+
+		// to populate select options
+		// takes parameter selector which is id of selector
+		// and listData which an array of id and displayData
+		const populateSelect = ({ selector, data = [] }) => {
+			let html = '<option selected></option>'
+			data.forEach((val) => {
+				html = [...html, `<option value="${val.id}">${val.display}</option>`]
+			})
+			selector.append(html);
+		}
+		   
+		// get the superior from selected nama employees,
+		// if there's no superior
+		// get superior from user account
+		const getSuperior = (nik, type = null) => {
+			if (nik) {
+				$.ajax({
+					type: "POST",
+					url: "/Conim",
+					data: JSON.stringify({
+						Option: "GET_SUPERIOR",
+						NIK: nik
+					}),
+					dataType: "json",
+					contentType: 'application/json; charset=utf-8',
+					success: function (res) {
+						const result = JSON.parse(res)
+						if (result.length > 0) {  
+							const superior = result.find((val) => val.row_num === 1) 
+                            DTO.SuperiorId = superior.SUPERIORID 
+						} else {
+
+						}
+					},
+					error: (err) => {
+						console.log(err)
+					}
+				})
+			}
+		}
+
+		const showFileName = {
+			show: (fileName) => {
+				$('#show_filename').removeAttr('hidden');
+				$('#show_upload').attr('hidden', 'hidden');
+				$('#displayFileName').html(fileName);
+		},
+			hide: () => {
+				$('#show_upload').removeAttr('hidden');
+				$('#show_filename').attr('hidden', 'hidden');
+				$('#displayFileName').html(null);
+			}
+		}
+	</script>
 }

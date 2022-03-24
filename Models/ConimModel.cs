@@ -24,9 +24,7 @@ namespace ConimOnline.Models
 
         public string Type { set; get; }
 
-        public string QCC { set; get; }
-
-        public string Fasilitator { set; get; }
+        public string QCC { set; get; } 
 
         public string NIK { set; get; }
 
@@ -38,6 +36,8 @@ namespace ConimOnline.Models
 
         public string UserId { set; get; }
 
+        public string Flag { set; get; }
+
         public string Branch { set; get; }
 
         public string PicApproval { set; get; }
@@ -45,6 +45,29 @@ namespace ConimOnline.Models
         public string PicNote { set; get; }
 
         public string Subdept { set; get; }
+        public string Filename { set; get; }
+        public string Filepath { set; get; }
+        public string Name { set; get; }
+
+        //public List<AnggotaModel> ListAnggota;
+        public string ListAnggota;
+
+        public List<string> ListFasilitator;
+         
     }
+
+    public class AnggotaModel
+    {
+        public string NIK { get; set; }
+        public string Type { get; set; }
+
+    }
+
+    public class FasilitatorModel
+    {
+        public string NIK { set; get; }
+    }
+
+
 }
  
