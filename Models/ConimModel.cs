@@ -40,7 +40,11 @@ namespace ConimOnline.Models
 
         public string Branch { set; get; }
 
+        public string Approval { set; get; }
+        public string ApprovalType { set; get; }
         public string PicApproval { set; get; }
+        public string PicCompanyApproval { set; get; }
+        public string ApprovalNote { set; get; }
 
         public string PicNote { set; get; }
 
@@ -50,9 +54,10 @@ namespace ConimOnline.Models
         public string Name { set; get; }
 
         //public List<AnggotaModel> ListAnggota;
-        public string ListAnggota;
+        //public string ListAnggota;
+        public List<AnggotaModel> ListAnggota;
 
-        public List<string> ListFasilitator;
+        public List<FasilitatorModel> ListFasilitator;
          
     }
 

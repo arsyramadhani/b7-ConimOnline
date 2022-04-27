@@ -6,47 +6,46 @@
 
 <div class="card card-body p-4 border-0 shadow mb-3">
     @*<div class="row">
-        <h6>Cari:</h6>
-    </div>*@
+            <h6>Cari:</h6>
+        </div>*@
     <div class="row mb-1 ">
-        <div class="col-lg-4 col-xl-2 mb-2"> 
-            <select id="sel_dept" class="form-control form-control-sm " disabled>
-                <option>Support - IT</option>
-            </select> 
-        </div>
-        <div class="col-lg-4 col-xl-2 mb-2"> 
-            <select id="sel_emp" class="form-control form-control-sm " > 
+        <div class="col-lg-4 col-xl-4 mb-2">
+            <select id="sel_dept" class="form-control form-control-sm ">
+                @*<option>Support - IT</option>*@
             </select>
         </div>
-        <div class="col-lg-4 col-xl-2 mb-2">
+        <div class="col-lg-4 col-xl-4 mb-2">
+            <select id="sel_emp" class="form-control form-control-sm ">
+            </select>
+        </div>
+        <div class="col-lg-4 col-xl-4 mb-2">
             <select id="sel_site" class="form-control form-control-sm ">
             </select>
         </div>
-        <div class="col-lg-4 col-xl-2 mb-2">
+        <div class="col-lg-4 col-xl-4 mb-2">
             <select id="sel_kategori" class="form-control form-control-sm ">
             </select>
         </div>
-        <div class="col-lg-4 col-xl-2 mb-2">
+        <div class="col-lg-4 col-xl-4 mb-2">
             <select id="sel_year" class="form-control form-control-sm ">
             </select>
         </div>
-        <div class="col-lg-4 col-xl-2 mb-2">
+        <div class="col-lg-4 col-xl-4 mb-2">
             <select id="sel_status" class="form-control form-control-sm ">
             </select>
-        </div> 
+        </div>
     </div>
     <div class="row">
         <div>
-            <button class="btn btn-sm btn-outline-success">Apply Filter</button>
-            <button class="btn btn-sm btn-outline-gray-500">Reset Filter</button>
+            <button class="btn btn-sm btn-outline-success">Find</button> 
         </div>
     </div>
- 
+
 </div>
 
 <div class="card card-body border-0 shadow table-wrapper table-responsive">
     <div class="mt-4"></div>
-    <table  id="example" class="table table-hover">
+    <table id="tblConim" class="table table-hover">
         <thead>
             <tr>
                 <th class="border-gray-200">Nomor</th>
@@ -60,89 +59,216 @@
                 <th class="border-gray-200">Tanggal Outstanding</th>
             </tr>
         </thead>
-        <tbody>
-            @*<tr>
-                    <td><a href="#" class="fw-bold">456468</a></td>
-                    <td><span class="fw-normal">Gold Subscription Plan</span></td>
-                    <td><span class="fw-normal">1 Sep 2019</span></td>
-                    <td><span class="fw-normal">1 Oct 2019</span></td>
-                    <td><span class="fw-bold">$533,42</span></td>
-                    <td><span class="fw-bold text-success">Paid</span></td>
-                    <td>
-                        <div class="btn-group">
-                            <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0"
-                                    data-bs-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false">
-                                <span class="icon icon-sm">
-                                    <span class="fas fa-ellipsis-h icon-dark"></span>
-                                </span><span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <div class="dropdown-menu py-0">
-                                <a class="dropdown-item rounded-top" href="#">
-                                    <span class="fas fa-eye me-2"></span>View
-                                    Details
-                                </a>
-                                <a class="dropdown-item" href="#"><span class="fas fa-edit me-2"></span>Edit</a>
-                                <a class="dropdown-item text-danger rounded-bottom"
-                                   href="#">
-                                    <span class="fas fa-trash-alt me-2"></span>Remove
-                                </a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><a href="#" class="fw-bold">456478</a></td>
-                    <td>
-                        <span class="fw-normal">Flexible Subscription Plan</span>
-                    </td>
-                    <td><span class="fw-normal">1 Aug 2019</span></td>
-                    <td><span class="fw-normal">1 Sep 2019</span></td>
-                    <td><span class="fw-bold">$233,42</span></td>
-                    <td><span class="fw-bold text-success">Paid</span></td>
-                    <td>
-                        <div class="btn-group">
-                            <button class="btn btn-link text-dark dropdown-toggle dropdown-toggle-split m-0 p-0"
-                                    data-bs-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false">
-                                <span class="icon icon-sm">
-                                    <span class="fas fa-ellipsis-h icon-dark"></span>
-                                </span><span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <div class="dropdown-menu py-0">
-                                <a class="dropdown-item rounded-top" href="#">
-                                    <span class="fas fa-eye me-2"></span>View
-                                    Details
-                                </a>
-                                <a class="dropdown-item" href="#"><span class="fas fa-edit me-2"></span>Edit</a>
-                                <a class="dropdown-item text-danger rounded-bottom"
-                                   href="#">
-                                    <span class="fas fa-trash-alt me-2"></span>Remove
-                                </a>
-                            </div>
-                        </div>
-                    </td>
-                </tr>*@
+        <tbody> 
         </tbody>
     </table>
     <div class="card-footer px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
-         
+
     </div>
 </div>
-
 @section scripts{
-    
     <script type="text/javascript">
-        $(document).ready(function () { 
-            $('#example').DataTable({ 
+        const DTO = {
+            Department: null,
+            NIK: null,
+        }
+        $(document).ready(function () {
+            const table = $('#tblConim').DataTable({
+                searching: false,
+                "bSort": false,
+                "dom": 'rtip'
+            }) 
+
+            // Load Department
+            $.ajax({
+                type: "POST",
+                url: "/api/conim",
+                data: JSON.stringify({
+                    Option: "GET_DEPARTMENT"
+                }),
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                success: function (res) {
+                    $('#sel_dept').select2({
+                        placeholder: "Departemen",
+                        data: res.map((val, i) => {
+                            return {
+                                id: i,
+                                text: val.DEPARTMENT
+                            }
+                        }
+                        )
+                    }).val(null).trigger('change')
+                },
+                error: (err) => {
+                    console.error(err)
+                }
+            });
+
+            // Load Employee
+            $.ajax({
+                type: "POST",
+                url: "/api/conim",
+                data: JSON.stringify({
+                    Option: "GET_EMPLOYEES"
+                }),
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                success: function (res) {
+                    let result = res.map((val, i) => {
+                        return {
+                            id: val.nik,
+                            text: val.username
+                        }
+                    }) 
+
+                    $('#sel_emp').select2({
+                        placeholder: "Karyawan",
+                        data: result
+                    }).val(null).trigger('change')
+                },
+                error: (err) => {
+                    console.error(err)
+                }
+            });
+
+            // Load Site
+            $.ajax({
+                type: "POST",
+                url: "/api/conim",
+                data: JSON.stringify({
+                    Option: "GET_SITE"
+                }),
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                success: function (res) {
+                    let result = res.map((val, i) => {
+                        return {
+                            id: val.Location,
+                            text: val.Location
+                        }
+                    }) 
+
+                    $('#sel_site').select2({
+                        placeholder: "Site",
+                        data: result
+                    }).val(null).trigger('change')
+                },
+                error: (err) => {
+                    console.error(err)
+                }
+            });
+
+            // Load Type
+            $.ajax({
+                type: "POST",
+                url: "/api/conim",
+                data: JSON.stringify({
+                    Option: "GET_TYPE"
+                }),
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                success: function (res) {
+                    let result = res.map((val, i) => {
+                        return {
+                            id: val.type,
+                            text: val.description
+                        }
+                    })
+
+                    $('#sel_kategori').select2({
+                        placeholder: "Kategori",
+                        data: result
+                    }).val(null).trigger('change')
+                },
+                error: (err) => {
+                    console.error(err)
+                }
+            });
+
+            // Get Year
+            $.ajax({
+                type: "POST",
+                url: "/api/conim",
+                data: JSON.stringify({
+                    Option: "GET_YEAR"
+                }),
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                success: function (res) {
+                    let result = res.map((val, i) => {
+                        return {
+                            id: val.CNM_Tahun,
+                            text: val.CNM_Tahun
+                        }
+                    })
+
+                    $('#sel_year').select2({
+                        placeholder: "Tahun",
+                        data: result
+                    }).val(null).trigger('change')
+                },
+                error: (err) => {
+                    console.error(err)
+                }
+            });
+
+            // Get Status
+            $.ajax({
+                type: "POST",
+                url: "/api/conim",
+                data: JSON.stringify({
+                    Option: "GET_STATUS"
+                }),
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                success: function (res) {
+                    let result = res.map((val, i) => {
+                        return {
+                            id: val.ID,
+                            text: val.STATUS
+                        }
+                    })
+
+                    $('#sel_status').select2({
+                        placeholder: "Status",
+                        data: result
+                    }).val(null).trigger('change')
+                },
+                error: (err) => {
+                    console.error(err)
+                }
+            });
+
+
+            $('#sel_dept').on('select2:select', function (e) {
+                DTO.Department = e.params.data.text
+            });
+            $('#sel_emp').on('select2:select', function (e) {
+                DTO.NIK = e.params.data.id
+            });
+        });
+
+
+    </script>    
+}
+
+@*@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if (initialize()) {
+                getLaporan()
+            }
+        });
+
+        const initialize = () => {
+            $('#tblConim').DataTable({
                 "lengthChange": false,
                 "searching": false,
                 "ordering": false
             });
 
-            $('#sel_dept').select2({ 
+            $('#sel_dept').select2({
                 placeholder: "Departemen"
             });
             $('#sel_emp').select2({
@@ -153,17 +279,56 @@
 
             });
             $('#sel_kategori').select2({
-                placeholder: "Kategori", 
+                placeholder: "Kategori",
                 minimumResultsForSearch: Infinity
             });
             $('#sel_year').select2({
                 placeholder: "Tahun"
             });
             $('#sel_status').select2({
-                placeholder: "Status", 
+                placeholder: "Status",
                 minimumResultsForSearch: Infinity
             });
-        });
+
+            return true
+        }
+
+
+
+
+
     </script>
-        
-}
+
+}*@
+
+@*@section scripts{
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            if (initialize()) {
+                getLaporan()
+            }
+        });
+
+           
+
+            //const getLaporan = () => {
+            //    return $.ajax({
+            //        dataType: "json",
+            //        contentType: 'application/json; charset=utf-8',
+            //        type: "POST",
+            //        url: "/Conim",
+            //        data: JSON.stringify({
+            //            Option: "GET_LAPORAN"
+            //        }),
+            //        success: function (response) {
+            //            let res = JSON.parse(response)
+            //            console.log(res)
+            //            return JSON.parse(response)
+            //        }
+            //    });
+            //}
+</script>
+
+}*@

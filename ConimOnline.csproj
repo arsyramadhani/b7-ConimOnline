@@ -45,12 +45,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CSharpVitamins.ShortGuid, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\CSharpVitamins.ShortGuid.2.0.0\lib\net40\CSharpVitamins.ShortGuid.dll</HintPath>
+    </Reference>
     <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Dapper.1.50.2\lib\net45\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.Doc, Version=10.2.5.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>packages\FreeSpire.Doc.10.2.0\lib\net40\Spire.Doc.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.License, Version=1.4.0.40, Culture=neutral, PublicKeyToken=b1144360237c8b3f, processorArchitecture=MSIL">
+      <HintPath>packages\FreeSpire.XLS.12.2.0\lib\net40\Spire.License.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.Pdf, Version=8.2.2.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>packages\FreeSpire.XLS.12.2.0\lib\net40\Spire.Pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.XLS, Version=12.2.0.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>packages\FreeSpire.XLS.12.2.0\lib\net40\Spire.XLS.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -66,6 +81,9 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.AspNet.WebApi.WebHost.5.2.7\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
@@ -129,15 +147,23 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Api\ConimApiController.cs" />
     <Compile Include="Controllers\Api\ConimController.cs" />
+    <Compile Include="Controllers\Api\DocController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\KonvensiController.cs" />
     <Compile Include="Controllers\LaporanController.cs" />
+    <Compile Include="Controllers\OopsController.cs" />
+    <Compile Include="Controllers\PicController.cs" />
     <Compile Include="DAL\ConimDAL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\ConimHelper.cs" />
     <Compile Include="Models\ConimModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\ConverterDocumentService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\js\volt.js" />
@@ -403,6 +429,7 @@
     <Content Include="Scripts\vendor\chartist-plugin-tooltips\dist\chartist-plugin-tooltip.min.js" />
     <Content Include="Scripts\vendor\chartist\dist\chartist.min.css" />
     <Content Include="Scripts\vendor\chartist\dist\chartist.min.js" />
+    <Content Include="Scripts\vendor\chart\chart.min.js" />
     <Content Include="Scripts\vendor\choices\choices.min.css" />
     <Content Include="Scripts\vendor\choices\choices.min.js" />
     <Content Include="Scripts\vendor\DataTables\DataTables-1.11.5\css\dataTables.bootstrap.css" />
@@ -662,6 +689,14 @@
     <Content Include="Views\Laporan\Find.cshtml" />
     <Content Include="Views\Laporan\Outstanding.cshtml" />
     <Content Include="Views\Laporan\Details.cshtml" />
+    <Content Include="Views\Laporan\Chart.cshtml" />
+    <Content Include="Views\Laporan\Edit.cshtml" />
+    <Content Include="Views\Oops\Index.cshtml" />
+    <Content Include="Views\Pic\Index.cshtml" />
+    <Content Include="Views\Konvensi\Index.cshtml" />
+    <Content Include="Views\Pic\ProgramKerja.cshtml" />
+    <Content Include="Views\Pic\Penilaian.cshtml" />
+    <Content Include="Views\Laporan\New.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -672,6 +707,7 @@
     <Folder Include="Scripts\vendor\sass\types\value\" />
     <Folder Include="Scripts\vendor\waypoints\src\" />
     <Folder Include="Scripts\vendor\waypoints\test\" />
+    <Folder Include="TemplateLaporan\" />
     <Folder Include="uploadFolder\" />
     <Folder Include="Views\Conim\" />
   </ItemGroup>

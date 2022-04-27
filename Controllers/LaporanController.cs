@@ -39,6 +39,11 @@ namespace ConimOnline.Controllers
         {
             return View();
         }
+         
+        public ActionResult Chart()
+        {
+            return View();
+        }
         public ActionResult Details([FromUri] string id)
 
         {
@@ -46,20 +51,21 @@ namespace ConimOnline.Controllers
             return View();
         }
 
+        public ActionResult Edit([FromUri] string id)
+
+        {
+            ViewBag.CNM_Number = id;
+            return View();
+        }
+
+        public ActionResult New()
+
+        { 
+            return View();
+        }
+
         #region DataFetching
 
-        //[Route("Conim")]
-        //public ActionResult Conim(ConimModel conimModel, AuthModel authModel)
-        //{
-        //    var dictionary = new Dictionary<string, object>
-        //    {
-        //        { "OPTION", conimModel.Option },
-        //        { "USERAD", authModel.Username },
-        //    };
-
-        //    var parameters = new DynamicParameters(dictionary);
-        //    return Json(conimDAL.StoredProcedure(parameters, SP_CONIM_ONLINE, ConimConn));
-        //}
         #endregion
     }
 }

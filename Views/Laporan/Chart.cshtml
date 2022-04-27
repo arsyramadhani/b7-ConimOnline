@@ -1,0 +1,99 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="row px-0">
+    <div class="col-12 col-xl-12">
+        <div class="card card-body border-0 shadow mb-4">
+            <canvas id="chartLaporan" style="position: relative; height:700px; width:100vw"></canvas> 
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/vendor/chart/chart.min.js"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function () {
+            const ctx = document.getElementById('chartLaporan').getContext('2d');
+            const chartLaporan = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Total Laporan',
+                        data: [],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    responsive: true,
+                    indexAxis: 'y',
+                }
+            });
+
+            // Get Chart Data
+            $.ajax({
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                type: "POST",
+                url: "/api/conim",
+                data: JSON.stringify({
+                    Option: "GET_SUMMARY",
+                    Tahun: 2022
+                }),
+                success: function (response) {
+                    console.log(response)
+                    let res = response
+
+                    chartLaporan.data = {
+                        labels: res.map((val) => val.CNM_Departemen),
+                        datasets: [
+                            {
+                                label: "Total Laporan",
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255,99,132,1)',
+                                borderWidth: 3,
+                                data: res.map((val) => val.CNM_TOTAL),
+                            }
+                        ]
+                    } 
+
+                   chartLaporan.update(); 
+                },
+                error: (err) => {
+                     console.log(err)
+                }
+            }).catch((err) => {
+                console.log(err) 
+            });
+
+
+
+        });
+
+
+    </script>
+}

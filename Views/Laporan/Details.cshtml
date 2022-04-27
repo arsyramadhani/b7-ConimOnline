@@ -5,246 +5,464 @@
 }
 
 @*<p>@ViewBag.Id</p>*@
+
 <div class="row px-0">
     <div class="col-12 col-xl-8">
         <div class="card card-body border-0 shadow mb-4">
-            <form onsubmit="(e) => { e.preventDefault() }">
-                <div class="row mb-3">
-                    <div class="col-4 ">
-                        <div>
-                            <label for="sel_type">Tipe Conim</label>
-                            @*<select id="sel_type" class="form-control ">
-                                <option></option>
-                            </select>*@ 
-                            <input id="sel_type" class="form-control" disabled />
-                        </div>
+            @*<div class="row mb-3">
+                    <div class="col-3">Status</div>
+                    <div class="col-9">
+                        Waiting For Approval
                     </div>
-
-                </div>
-                <hr />
-                <div id="group_singular">
-                    <div class="row mb-3" id="group_nama_user">
-                        <div class="col-8">
-                            <div>
-                                <label for="sel_group_nama_user">Nama</label>
-                                <input id="sel_group_nama_user" class="form-control" disabled />
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div>
-                                <label for="input_departemen_user">Departemen</label>
-                                <input id="input_departemen_user" class="form-control" disabled />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="group_qcc_qcp" hidden>
-                    <div class="row mb-3" id="group_nama_ketua">
-                        <div class="col-8">
-                            <div>
-                                <label for="sel_group_nama_ketua">Ketua</label>
-                                <select id="sel_group_nama_ketua" class="form-control">
-                                    <option selected></option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div>
-                                <label for="display_departemen_ketua">Departemen</label>
-                                <input id="display_departemen_ketua" class="form-control" disabled />
-                            </div>
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="row mb-3 " id="group_nama_fasilitator">
-                        <div class="col-8 mb-2" id="row_nama_fasilitator_1">
-                            <div>
-                                <label for="sel_group_nama_fasilitator">Fasilitator</label>
-                                <select id="sel_group_nama_fasilitator" class="form-control">
-                                    <option></option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-4 mb-2" id="row_display_departemen_fasilitator_1">
-                            <div>
-                                <label for="display_departemen_fasilitator">Departemen</label>
-                                <input id="display_departemen_fasilitator" class="form-control" disabled />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3" id="group_btn_qcc_qcp_fasilitator">
-                        <div class="col-md-12 d-inline-flex justify-content-start gap-2">
-                            <button id="btnAddFasilitator" type="button" class="btn btn-primary btn-sm ">
-                                Tambah Fasilitator
-                            </button>
-                            <button id="btnRemoveFasilitator" type="button" class="btn  btn-primary btn-sm ">
-                                Hapus Fasilitator
-                            </button>
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="row mb-3" id="group_nama_anggota">
-                        <div class="col-8 mb-2" id="row_nama_anggota_1">
-                            <div>
-                                <label for="sel_group_nama_anggota">Anggota</label>
-                                <select id="sel_group_nama_anggota" class="form-control">
-                                    <option></option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-4 mb-2" id="row_display_departemen_anggota_1">
-                            <div>
-                                <label for="display_departemen_anggota">Departemen</label>
-                                <input id="display_departemen_anggota" class="form-control" disabled />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3" id="group_btn_qcc_qcp">
-                        <div class="col-md-12 d-inline-flex justify-content-start gap-2">
-                            <button id="btnAddAnggota" type="button" class="btn  btn-primary btn-sm ">
-                                Tambah Anggota
-                            </button>
-                            <button id="btnRemoveAnggota" type="button" class="btn  btn-primary btn-sm">
-                                Hapus Anggota
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class=" ">
-                        <label for="temaConim">Tema Conim</label>
-                        <textarea disabled class="form-control" placeholder="Enter your message..." id="temaConim" rows="5"></textarea>
-                    </div>
-                </div>
-                <hr />
-                <div class="row mb-3" id="show_upload" hidden>
-                    <div class="col-md-9 ">
-                        <div class="">
-                            <label for="fileUpload" class="form-label">Upload File Conim</label>
-                            <input class="form-control" type="file" id="fileUpload">
-                            <small id="fileUpload" class="form-text text-muted text-italic">*Format file adalah xlsx/docx, Maks: 5mb</small>
-                        </div>
-                    </div>
-                    <div class="col-md-3 ">
-                        <div class="">
-                            <div class="mt-4"></div>
-                            @*<button class="btn btn-gray-800 mt-2  animate-up-2" style="width: 100%">Upload</button>*@
-                            <button id="btnUpload" type="button" class="btn mt-2 btn-primary d-inline-flex align-items-center">
-                                Upload
-                                <svg class="icon icon-xxs ms-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M2 9.5A3.5 3.5 0 005.5 13H9v2.586l-1.293-1.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 15.586V13h2.5a4.5 4.5 0 10-.616-8.958 4.002 4.002 0 10-7.753 1.977A3.5 3.5 0 002 9.5zm9 3.5H9V8a1 1 0 012 0v5z" clip-rule="evenodd"></path></svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-3" id="show_filename">
-                    <div class="col-md-12 ">
-                        <label class="form-label">Attachment</label>
-                        <div class="card mb-2">
-                            <div class="card-body d-flex align-items-center justify-content-between px-3 py-3">
-                                <span id="displayFileName">Teste</span>
-                                @*<button class="btn btn-primary btn-sm" id="btn_deleteFile">Delete</button>*@
-                            </div>
-                        </div>
-                        <div class="card mb-2">
-                            <div class="card-body d-flex align-items-center justify-content-between px-3 py-3">
-                                <span id="displayFileName">Teste</span>
-                                @*<button class="btn btn-primary btn-sm" id="btn_deleteFile">Delete</button>*@
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @*<div class="mt-3">
-                    <button class="btn btn-gray-800 mt-2 animate-up-2" type="submit" id="btnSubmit">Simpan</button>
-                    <button class="btn btn-yellow-100 mt-2 animate-up-2" type="reset" id="btnReset">Reset</button>
                 </div>*@
-            </form>
-        </div>
-    </div>
-    <div class="col-12 col-xl-4">
-        <div class="row">
-            <div class="col-12  ">
-                <div class="card shadow border-0 text-left p-0">
-                    <div class="card-body ">
-                        <h5 class="h5">Status</h5>
+            <div class="row mb-3">
+                <div class="col-3">Number</div>
+                <div class="col-9"><input class="form-control" value="" disabled style="background-color: white" id="valNumber" /></div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-3">Tipe Conim</div>
+                <div class="col-9"><input class="form-control" value="" id="valTipe" disabled style="background-color: white" /></div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-3">Created At</div>
+                <div class="col-9"><input class="form-control" value="" id="valCreatedAt" disabled style="background-color: white" /></div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-3">Created By</div>
+                <div class="col-9"><input class="form-control" value="" id="valCreatedBy" disabled style="background-color: white" /></div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-3">Tema</div>
+                <div class="col-9"><textarea id="valTema" class="form-control" style="resize: none; min-height: 100px; background-color: white" disabled></textarea></div>
+            </div>
 
-                    </div>
+            <div class="row mb-3" id="listAnggota" hidden>
+                <hr class="mt-0" />
+                <div class="col-3">
+                    <label>Anggota</label>
+                </div>
+                <div class="col-9" style="overflow-x: auto">
+                    <table class="table table-responsive" id="tblAnggota">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Tipe</th>
+                                <th>Nama</th>
+                                <th>NIK</th>
+                                <th>Department</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th colspan="4" class="text-center">Tidak Ada Data</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <hr class="mt-0" />
+            <div class="row mb-1">
+                <div class="col-3">Attachment</div>
+                <div class="col-9" id="listAttachment">
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <div class="col-12 col-xl-4">
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="card shadow border-0 text-left p-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6"><a id="linkEdit" class="btn btn-primary disabled" style="width: 100%;">Edit</a></div>
+                            <div class="col-6"><button class="btn btn-primary" style="width: 100%;">Delete</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3" id="divApprovalConim" hidden>
+            <div class="col-12">
+                <div class="card shadow border-0 text-left p-0">
+                    <div class="card-body">
+                        <div class="row gap-0">
+                            <h6 class="h-6">Approval Conim</h6>
+                            @*<p>Catatan Approval / Reject</p>
+                                <div class="col-12">
+                                    <textarea class="form-control" style="min-height: 120px"></textarea>
+                                </div>
+                                <small class="mt-2">*Catatan wajib diisi</small>*@
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col-6"><button id="btnApprove" class="btn btn-success text-white" style="width: 100%;">Approve</button></div>
+                            <div class="col-6"><button id="btnReject" class="btn btn-danger" style="width: 100%;">Reject</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="card shadow border-0 text-left p-0">
+                    <div class="card-body" id="approvalList">
+                        <h3 class="h6 mb-0 px-0">Status Approval</h3>
+                        <br />
+                        @*<div class="row mb-3">
+                                <div class="col-3">
+                                    <button disabled class="btn btn-icon-only btn-outline-success btn-lg d-inline-flex align-items-center" style="width: 100%" type="button">
+                                        <svg class="icon danger" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 15a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11zm2-13v1c0 .537.12 1.045.337 1.5h6.326c.216-.455.337-.963.337-1.5V2h-7zm3 6.35c0 .701-.478 1.236-1.011 1.492A3.5 3.5 0 0 0 4.5 13s.866-1.299 3-1.48V8.35zm1 0v3.17c2.134.181 3 1.48 3 1.48a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351z"></path></svg>
+                                    </button>
+                                </div>
+                                <div class="col-9"><small>Atasan <br /><b>Denny Irawan</b> <br />Disetujui Pada</small></div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-3">
+                                    <button disabled class="btn btn-icon-only btn-outline-danger btn-lg d-inline-flex align-items-center" style="width: 100%" type="button">
+                                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path></svg>
+                                    </button>
+                                </div>
+                                <div class="col-9"><small>PIC Department <br /><b>Denny Irawan</b> <br />Reject <br />Alasan: Bukan sebuah improvement yang baik</small></div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-3">
+                                    <button disabled class="btn btn-icon-only btn-lg btn-outline-gray-500 d-inline-flex align-items-center" style="width: 100%" type="button">
+                                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path></svg>
+                                    </button>
+                                </div>
+                                <div class="col-9"><small>PIC Company <br /><b>Denny Irawan</b> <br />Menunggu Approval</small></div>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
 
+
+        <!--<div class="row">
+        <div class="col-12  ">
+            <div class="card shadow border-0 text-left p-0">
+                <div class="card-body ">-->
+        @*<h5 class="h5">Status</h5>*@
+        <!--<div class="row gap-2" id="listStatus">-->
+        @*<div class="col-sm-12">
+                <label>Status</label>
+                <input class="form-control" value="test" disabled />
+            </div>*@
+        <!--<div class="col-sm-12">
+                                <label>Approve</label>
+                            </div>
+                            <div class="col-sm-12">
+                                <label>Catatan</label>
+                                <textarea class="form-control mb-2" style="resize: none; min-height: 100px"></textarea>
+                            </div>
+                            <div class="col-sm-12">
+                                <button class="btn btn-success text-white">Approve</button>
+                                <button class="btn btn-danger text-white">Reject</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+
+    </div>
+</div>
 
 @section scripts {
     <script type="text/javascript">
         $(document).ready(function () {
             if (Initialize()) {
                 const CNM_Number = '@ViewBag.CNM_Number'
-                let isLoading = true 
+                let isLoading = true
 
                 // make sure data is loaded
                 $.when((getConimData(CNM_Number))).done((response) => {
-                    let res = JSON.parse(response)[0]
+                    let res = response[0]
+                    console.log(response[0])
+                     
+                    if (!res) {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Data tidak ditemukan'
+                        }).then(() => {
+                            window.location.replace(window.location.origin + '/oops');
+                        })
+                    } else { 
+                        //console.log(res.isUserCanApprove)
+                        if (res.isUserCanApprove === 1) {
+                            $('#divApprovalConim').removeAttr('hidden')
+                        }
 
-                    console.log(res)
-                    $('#sel_type').val(res.CNM_Type)
+                        // edit button
+                        if (res.isUserCanEdit === 1) {
+                            $('#linkEdit').removeClass('disabled')
+                        }
 
-                    if (res.CNM_Type === 'QCC' && res.CNM_Type === 'QCP') {
-                        
-                    } else {
-                       
-                        $('#sel_group_nama_user').val(res.CNM_NAMA)
-                        $('#input_departemen_user').val(res.CNM_Departemen)
-                       
+                        // Get Attachment and render file attachment
+                        $.when(getAttachment(res.CNM_Number)).done(res => {
+                            const result = JSON.parse(res)
+                            let html = ''
+                            result.forEach((val) => {
+                                html += `<div class="mb-4">
+                                            <div class="card mb-2">
+                                                <div class="card-body d-flex align-items-center justify-content-between px-3 py-3">
+                                                    <div>
+                                                        <span class="fw-bold" id="displayFileName">${val.FileNameDisplay}</span>
+                                                        <br />
+                                                        <span class="font-small ">Last Update: ${val.LastUpdate}</span>
+                                                        <br />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <a href="/conim/DownloadFile?filePath=${val.FilePath}&fileName=${val.FileNameDisplay}" target="_blank" class="btn btn-primary btn-sm">Download Attachment</a>
+                                        </div>`
+                            })
+
+                            $('#listAttachment').append(html);
+
+                        })
+
+                        // Append and get list status aprroval
+                        $.when(getApprovalStatus(res.CNM_Number)).done(response => {
+                            //console.log(response)
+
+                            let html = response.map((val) => {
+                                console.log(val.CNM_ApprovalType + ' -- ' + val.UserAD)
+                                icon = ''
+                                rejectReason = ''
+                                if (val.ApprovalDescription.toUpperCase() === 'APPROVED') {
+                                    icon = `<button disabled class="btn btn-icon-only btn-success btn-lg d-inline-flex align-items-center text-white" style="width: 100%" type="button">
+                                    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path></svg> </button>`
+                                }
+                                if (val.ApprovalDescription.toUpperCase() === 'WAITING APPROVAL') {
+                                    icon = `<button disabled class="btn btn-icon-only btn-primary btn-lg d-inline-flex align-items-center text-white" style="width: 100%" type="button">
+                                        <svg class="icon danger" stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M2.5 15a.5.5 0 1 1 0-1h1v-1a4.5 4.5 0 0 1 2.557-4.06c.29-.139.443-.377.443-.59v-.7c0-.213-.154-.451-.443-.59A4.5 4.5 0 0 1 3.5 3V2h-1a.5.5 0 0 1 0-1h11a.5.5 0 0 1 0 1h-1v1a4.5 4.5 0 0 1-2.557 4.06c-.29.139-.443.377-.443.59v.7c0 .213.154.451.443.59A4.5 4.5 0 0 1 12.5 13v1h1a.5.5 0 0 1 0 1h-11zm2-13v1c0 .537.12 1.045.337 1.5h6.326c.216-.455.337-.963.337-1.5V2h-7zm3 6.35c0 .701-.478 1.236-1.011 1.492A3.5 3.5 0 0 0 4.5 13s.866-1.299 3-1.48V8.35zm1 0v3.17c2.134.181 3 1.48 3 1.48a3.5 3.5 0 0 0-1.989-3.158C8.978 9.586 8.5 9.052 8.5 8.351z"></path></svg>
+                                    </button>`
+                                } if (val.ApprovalDescription.toUpperCase() === 'REJECTED') {
+                                    icon = `<button disabled class="btn btn-icon-only btn-danger btn-lg d-inline-flex align-items-center text-white" style="width: 100%" type="button">
+                                       <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M15.73 3H8.27L3 8.27v7.46L8.27 21h7.46L21 15.73V8.27L15.73 3zM17 15.74L15.74 17 12 13.26 8.26 17 7 15.74 10.74 12 7 8.26 8.26 7 12 10.74 15.74 7 17 8.26 13.26 12 17 15.74z"></path></svg>
+                                    </button>` 
+                                }
+
+                                return `<div class="row mb-3">
+                                            <div class="col-3">
+                                               ${icon}
+                                            </div>
+                                            <div class="col-9">
+                                                <small>${val.CNM_ApprovalType} 
+                                                    <br /><b>${val.CNM_UserName} <br />
+                                                    ${val.Name}</b>
+                                                    <br />${val.ApprovalDescription} ${val.CNM_ApprovalDate !== '' ? 'at ' + val.CNM_ApprovalDate : ''}
+                                                    ${val.ApprovalDescription.toUpperCase() === 'REJECTED' ? '<br /> Catatan : ' + val.CNM_RejectReason : ''}
+                                                </small>
+                                                </div>
+                                        </div>`
+                            })
+
+                            $('#approvalList').append(...html);
+                        })
+
+
+                        // Fill input
+                        $('#valTipe').val(res.CNM_Type);
+                        $('#valNumber').val(res.CNM_Number);
+                        $('#valCreatedAt').val(res.CNM_EntryDate);
+                        $('#valCreatedBy').val(res.CNM_NAMA);
+                        $('#valTema').val(res.CNM_Tema);
+
+                        $('#linkEdit').attr('href', window.location.href.replace('details', 'edit')
+    );
+
+                        if (res.CNM_Type === "QCP" || res.CNM_Type === "QCC") {
+                            const table = $('#tblAnggota').find('tbody').first();
+                            $('#listAnggota').removeAttr('hidden');
+
+                            $.when(getAnggota(res.CNM_Number)).done((response) => {
+                                const res = JSON.parse(response)
+
+                                // Empty table with no data
+                                table.empty()
+                                let html = ''
+                                res.forEach((val) => {
+                                    html += `<tr>
+                                                <td>${val.CONIM_TYPE}</td>
+                                                <td>${val.CONIM_ANGGOTA === "" && val.CONIM_USERNAME}</td>
+                                                <td>${val.CONIM_NIK}</td>
+                                                <td>${val.CONIM_ORG_GROUP_NAME}</td>
+                                             </tr>`
+                                })
+
+                                table.append(html)
+
+                                console.log(res)
+                            })
+
+
+                        } else {
+                            $('#sel_group_nama_user').val(res.CNM_NAMA);
+                            $('#input_departemen_user').val(res.CNM_Departemen);
+                            $('#temaConim').val(res.CNM_Tema);
+                        }
+
+                        // Approval
+                        $('#btnApprove').on('click', function () {
+                            Swal.fire({
+                                title: `Apakah anda yakin?`,
+                                text: `Setujui laporan conim ${res.CNM_Number}`,
+                                @*icon: 'warning',*@
+                                showCancelButton: true,
+                                confirmButtonText: 'Ya'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    $.ajax({
+                                        dataType: "json",
+                                        contentType: 'application/json; charset=utf-8',
+                                        type: "POST",
+                                        url: "/api/conim",
+                                        data: JSON.stringify({
+                                            Option: "POST_APPROVAL",
+                                            Number: res.CNM_Number,
+                                            NIK: sessionStorage.NIK,
+                                            ApprovalType: "APPROVE"
+                                        }),
+                                        success: function (response) {
+                                            Swal.fire(
+                                                'Success!',
+                                                'Data berhasil disimpan.',
+                                                'success'
+                                            )
+                                            console.log(response)
+                                        },
+                                        error: (err) => {
+                                            console.error(err) 
+                                        }
+                                    }) 
+                                }
+                            })
+
+                        });
+                        $('#btnReject').on('click', function () {
+                            Swal.fire({
+                                title: 'Reject laporan conim',
+                                input: 'textarea',
+                                inputLabel: 'Berikan alasan reject laporan',
+                                inputPlaceholder: 'Type your message here...',
+                                inputAttributes: {
+                                    'aria-label': 'Type your message here'
+                                },
+                                showCancelButton: true
+                            }).then(({ isConfirmed, value }) => {
+                                if (isConfirmed) {
+                                    $.ajax({
+                                        dataType: "json",
+                                        contentType: 'application/json; charset=utf-8',
+                                        type: "POST",
+                                        url: "/api/conim",
+                                        data: JSON.stringify({
+                                            Option: "POST_APPROVAL",
+                                            Number: res.CNM_Number,
+                                            NIK: sessionStorage.NIK,    
+                                            ApprovalType: "REJECT",
+                                            ApprovalNote: value
+                                        }),
+                                        success: function (response) {
+                                            Swal.fire(
+                                                'Success!',
+                                                'Data berhasil disimpan.',
+                                                'success'
+                                            )
+                                            console.log(response)
+                                        },
+                                        error: (err) => {
+                                            console.error(err)
+                                        }
+                                    })
+                                } 
+                            })
+
+                        });
+
                     }
-                    $('#temaConim').val(res.CNM_Tema)
-                    
-
                 })
             }
         });
         const Initialize = () => {
             // To initialize Config data
-            //$('#sel_type').select2({
-            //    minimumResultsForSearch: Infinity,
-            //    placeholder: "Pilih Tipe Conim"
-            //});
-            //$('#sel_dept').select2({
-            //    placeholder: "Pilih Departemen"
-            //});
-            //$('#sel_group_nama_user').select2({
-            //    tags: true,
-            //    insertTag: function (data, tag) {
-            //        data.push(tag);
-            //    }
-            //});
-            //$('[id^=sel_group_nama_]').select2({
-            //    tags: true,
-            //    placeholder: "Input Nama",
-            //    insertTag: function (data, tag) {
-            //        data.push(tag);
-            //    }
-            //});
 
             userInfo = JSON.parse(sessionStorage.getItem("userinfo"))
 
             return true
-        } 
+        }
         const getConimData = (Number) => {
+            return $.ajax({
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                type: "POST",
+                url: "/api/conim",
+                data: JSON.stringify({
+                    Option: "GET_LAPORAN_BY_ID",
+                    Number: Number,
+                    NIK: sessionStorage.NIK
+                }),
+                success: function (response) {
+                    return response
+                }
+            });
+        }
+
+        const getAnggota = (Number) => {
             return $.ajax({
                 dataType: "json",
                 contentType: 'application/json; charset=utf-8',
                 type: "POST",
                 url: "/Conim",
                 data: JSON.stringify({
-                    Option: "GET_LAPORAN_BY_ID",
+                    Option: "GET_ANGGOTA",
                     Number: Number
                 }),
                 success: function (response) {
+                    let res = JSON.parse(response)
                     return JSON.parse(response)
                 }
             });
         }
+
+        const getAttachment = (Number) => {
+            return $.ajax({
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                type: "POST",
+                url: "/Conim",
+                data: JSON.stringify({
+                    Option: "GET_ATTACHMENT",
+                    Number: Number
+                }),
+                success: function (response) {
+                    let res = JSON.parse(response)
+                    return JSON.parse(response)
+                }
+            });
+        }
+
+        const getApprovalStatus = (number) => {
+            return $.ajax({
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                type: "POST",
+                url: "/api/conim",
+                data: JSON.stringify({
+                    Option: "GET_APPROVAL_STATUS_BY_ID",
+                    Number: number
+                }),
+                success: function (response) {
+                    return response
+                }
+            });
+        }
+
+        const isUserCanApprove = (userId) => {
+
+        }
+
+
     </script>
-    }
+}

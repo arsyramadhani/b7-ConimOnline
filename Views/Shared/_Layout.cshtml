@@ -72,25 +72,15 @@
 </head>
 
 <body>
-    @*@Html.Partial("_Sidebar")*@
-    <nav class="navbar navbar-dark navbar-theme-primary px-4 col-12 d-lg-none">
-        <a class="navbar-brand me-lg-5" href="../index.html">
-            <img class="navbar-brand-dark" src="~/Assets/img/brand/light.svg" alt="Volt logo"> <img class="navbar-brand-light" src="~/Assets/img/brand/dark.svg" alt="Volt logo">
-        </a>
-        <div class="d-flex align-items-center">
-            <button class="navbar-toggler d-lg-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </div>
-    </nav>
+    @*@Html.Partial("_Sidebar")*@ 
     <nav id="sidebarMenu" class="sidebar d-lg-block bg-gray-800 text-white collapse" data-simplebar>
         <div class="sidebar-inner px-4 pt-3">
             <div class="user-card d-flex d-md-none align-items-center justify-content-between justify-content-md-center pb-4">
                 <div class="d-flex align-items-center">
-                    <div class="avatar-lg me-4">
+                    @*<div class="avatar-lg me-4">
                         <img src="../assets/img/team/profile-picture-3.jpg" class="card-img-top rounded-circle border-white"
                              alt="Bonnie Green">
-                    </div>
+                    </div>*@
                     <div class="d-block">
                         <h2 class="h5 mb-3">Hi, Jane</h2>
                         <a href="../pages/examples/sign-in.html" class="btn btn-secondary btn-sm d-inline-flex align-items-center">
@@ -111,9 +101,34 @@
                 @Html.Partial("_Sidebar")
             </ul>
         </div>
-    </nav>
-
+    </nav> 
     <main class="content">
+        <nav class="navbar navbar-top navbar-expand navbar-dashboard navbar-dark ps-0 pe-2 pb-0 z-999">
+            <div class="container-fluid px-0">
+                <div class="d-flex justify-content-between w-100" id="navbarSupportedContent">
+                    <div class="d-flex align-items-center"> 
+                    </div>
+                    <!-- Navbar links -->
+                    <ul class="navbar-nav align-items-center"> 
+                        <li class="nav-item dropdown ms-lg-3">
+                            <a class="nav-link dropdown-toggle pt-1 px-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="media d-flex align-items-center">
+                                       <div class="media-body ms-2 text-dark align-items-center d-none d-lg-block">
+                                        <span class="mb-0 font-small fw-bold text-gray-900" id="display_username">Welcome</span>
+                                    </div>
+                                </div>
+                            </a>
+                            <div class="dropdown-menu dashboard-dropdown dropdown-menu-end mt-2 py-1"> 
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <svg class="dropdown-icon text-danger me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
         <div class="py-2 px2 pt-4">
             <div class="d-flex justify-content-between w-100 flex-wrap">
                 <div class="mb-3 mb-lg-0">
@@ -175,34 +190,48 @@
 
 
     <script type="text/javascript">
-        const userAd = "febrian.ramadhani"
+        //const userAd = "febrian.ramadhani"
         $(document).ready(function () {
-            let userInfo = JSON.parse(sessionStorage.getItem("userinfo"))
+            
+            let userInfo = sessionStorage.getItem("NIK")
+            if (!userInfo) {
+                getAuth()
+            }
+
+            console.log(JSON.parse(sessionStorage.getItem("userinfo")))
+
+            $('#display_username').text(`WELCOME, ${JSON.parse(sessionStorage.getItem("userinfo")).USERNAME} - ${JSON.parse(sessionStorage.getItem("userinfo")).NIK}`)
              
-
-            !userInfo ? getAuth() : userInfo.USERAD !== userAd && getAuth()
-
-            console.log(userInfo)
-
+            $('#submenu-laporan-conim').click()
         });
 
-
-        const getAuth = () => {
+        const getAuth = (username = 'febrian.ramadhani') => {
             $.ajax({
                 type: "POST",
-                url: "/Conim",
+                url: "/api/conim",
                 data: JSON.stringify({
                     Option: "GET_AUTH",
-                    UserName: userAd
+                    UserName: username
                 }),
                 dataType: "json",
                 contentType: 'application/json; charset=utf-8',
                 success: function (res) {
-                    let result = JSON.parse(res)
-                    //console.log(result[0])
+                    let result = res[0]
+                    console.log(result.USERNAME)
                     console.log('Fetch user data')
-                    sessionStorage.setItem("userinfo", JSON.stringify(result[0]));
+                    sessionStorage.setItem("userinfo", JSON.stringify(result));
+
+                    Object.keys(result).forEach((val) => { 
+                        sessionStorage.setItem(val, result[val] )
+                    }) 
+
+                },
+                error: (err) => {
+                    console.error(err)
                 }
+            }).catch(err => {
+                        console.error(err)
+            
             });
         }
     </script>

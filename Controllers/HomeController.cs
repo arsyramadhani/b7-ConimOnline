@@ -8,6 +8,12 @@ namespace ConimOnline.Controllers
 {
     public class HomeController : Controller
     {
+
+        [Route("")]
+        public ActionResult HomeIndex()
+        { 
+            return View("~/Views/Home/Index.cshtml");
+        }
         public ActionResult Index()
         {
             return View();

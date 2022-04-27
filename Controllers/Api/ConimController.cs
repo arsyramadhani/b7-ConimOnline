@@ -38,6 +38,9 @@ namespace ConimOnline.Controllers.Api
                 { "CNM_Departemen", conimModel.Department },
                 { "CNM_SubDept", conimModel.Subdept },
                 { "CNM_Tema", conimModel.Tema },
+                { "CNM_Approval", conimModel.Approval },
+                { "CNM_PICApproval", conimModel.PicApproval },
+                { "CNM_PICCompanyApproval", conimModel.PicCompanyApproval },
                 { "CNM_UserID", conimModel.UserId },
                 { "CNM_Number", conimModel.Number },
                 { "Filename", conimModel.Filename},
@@ -57,7 +60,7 @@ namespace ConimOnline.Controllers.Api
                 }
             } 
 
-            return Json(conimDAL.StoredProcedure(parameters, SP_CONIM_ONLINE, ConimConn));
+            return Json(conimDAL.StoredProcedure(parameters, SP_CONIM_ONLINE, ConimConn), JsonRequestBehavior.AllowGet);
         }
 
         //[Route("api/conim")]
@@ -136,7 +139,25 @@ namespace ConimOnline.Controllers.Api
            
             return Json(JsonConvert.SerializeObject(myData));
         }
-     
-    
+
+        public ActionResult DownloadFile(string filePath, string fileName)
+        {
+            string fullName = filePath;
+
+            byte[] fileBytes = GetFile(fullName);
+            return File(
+                fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+        }
+
+        byte[] GetFile(string s)
+        {
+            System.IO.FileStream fs = System.IO.File.OpenRead(s);
+            byte[] data = new byte[fs.Length];
+            int br = fs.Read(data, 0, data.Length);
+            if (br != fs.Length)
+                throw new System.IO.IOException(s);
+            return data;
+        }
+
     }
 }
