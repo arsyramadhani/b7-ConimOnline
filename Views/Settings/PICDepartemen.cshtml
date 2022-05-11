@@ -1,0 +1,200 @@
+﻿
+@{
+    ViewBag.Title = "PIC Departemen";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+} 
+
+<div class="row px-0">
+    <div class="col-12 col-xl-12"> 
+        <div class="card border-0 shadow"> 
+            <div class="card-body"> 
+                <div class="table-responsive">
+                    <table class="table table-centered table-nowrap mb-0 rounded">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="border-0 rounded-start">#</th>
+                                <th class="border-0">Departemen</th>
+                                <th class="border-0">NIK</th>
+                                <th class="border-0">Nama</th>
+                                <th class="border-0 rounded-end">Update</th> 
+                            </tr>
+                        </thead>
+                        <tbody id="listPic">
+                            <!-- Item -->
+                            <tr>
+                                <td colspan="5" class="text-center">Belum Ada Data</td>
+                            </tr> 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-default" tabindex="-1" aria-labelledby="modal-default" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="h6 modal-title">Update PIC Department <span id="displayDepartemen"></span> </h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="picBefore">PIC Ongoing</label>
+                    <input type="text" attr-id="0" id="picBefore" class="form-control bg-white" placeholder="" disabled="">
+                </div>
+                <div class="mb-3">
+                    <label for="sel_user">Pilih PIC Baru</label>
+                    <select id="sel_user" class="form-control form-control-sm ">
+                        <option></option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link text-gray-600 ms-auto " id="btnClose" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success text-white" id="btnSimpan">Simpan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () { 
+            $('#sel_user').select2({
+                placeholder: "Pilih PIC"
+            });
+
+            $.when(loadPicDepartment()).done(res => {
+                $('.btnUpdate').on('click', e => {
+                    e.preventDefault()
+                    // empty list
+                    $('#sel_user').empty().append('<option></option>').trigger('change') 
+
+                    const group = $(e.target).closest("tr").find('.divGroupName').text().trim()
+                    const nik = $(e.target).closest("tr").find('.divNik').text().trim()
+                    const username = $(e.target).closest("tr").find('.divUsername').text().trim()
+
+                    loadListPICbyDepartment(group)
+
+                    console.log({
+                        group,
+                        nik,
+                        username
+                    })
+
+                    if (nik === '-') {
+                        $('#picBefore').val('Belum ada data')
+                        $('#picBefore').attr('data-id', '-')
+                    } else {
+                        $('#picBefore').val(nik + ' - ' + username)
+                        $('#picBefore').attr('data-id', nik)
+                    }
+
+                    $('#displayDepartemen').text(': ' + group) 
+                })
+
+                $('#btnSimpan').on('click', (e) => {
+                    e.preventDefault()
+
+                    const NikBefore = $('#picBefore').attr('data-id')
+                    const NikAfter = $('#sel_user').val()
+
+                    console.log({
+                        NikBefore, NikAfter
+                    })
+
+                    if (!NikAfter) {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Pilih PIC terlebih dahulu'
+                        })
+                         
+                    }
+                    if (NikAfter === NikBefore) {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Tidak dapat memilih PIC yang sama'
+                        }) 
+                    }
+                    $.when(updatePICDepartment(NikBefore, NikAfter)).done(res => {
+                        $('#picBefore').attr('data-id', '-')
+                        $('#picBefore').val(null)
+                        Swal.fire({
+                            icon: 'success',
+                            text: 'Berhasil Submit PIC'
+                        })
+                        location.reload()
+                    }) 
+                })
+
+            }).catch((err) => console.error(err)) 
+        });
+
+        const loadPicDepartment = () => $.ajax({
+            type: "POST",
+            url: "/api/conim",
+            data: JSON.stringify({
+                Option: "GET_ACTIVE_PIC_DEPARTMENT"
+            }),
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                @* console.log(response) *@
+                let content = ''
+                response.forEach((val, i) => {
+                    content += `<tr>
+                                        <td>${i + 1}</td>
+                                        <td class="divGroupName">
+                                            ${val.Org_Group_Name}
+                                        </td>
+                                        <td class="divNik">
+                                            ${!val.NIK ? '-' : val.NIK}
+                                        </td>
+                                        <td class="divUsername">
+                                            ${!val.Username ? '-' : val.Username}
+                                        </td>
+                                        <td>
+                                            <button data-bs-toggle="modal" data-bs-target="#modal-default" class="btnUpdate btn btn-primary text-white btn-xs">Update</button>
+                                        </td>
+                                    </tr>`
+                })
+                $('#listPic').empty()
+                $('#listPic').append(content)
+            }
+        })
+
+        const loadListPICbyDepartment = (dept) => $.ajax({
+            type: "POST",
+            url: "/api/conim",
+            data: JSON.stringify({
+                Option: "GET_EMPLOYEE_BY_DEPARTMENT",
+                Department: dept
+            }),
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8',
+            success: (res) => {
+                let listUser = res.map((val) => {
+                    return `<option value='${val.NIK}'>${val.NIK} - ${val.Username}</option>`
+                })
+                $('#sel_user').append(...listUser).trigger('change');
+            }
+        })
+
+        const updatePICDepartment = (nikBefore, nik) => $.ajax({
+            type: "POST",
+            url: "/api/conim",
+            data: JSON.stringify({
+                Option: "POST_PIC_DEPARTMENT",
+                Nik: nik,
+                NIKBefore: nikBefore
+            }),
+            dataType: "json",
+            contentType: 'application/json; charset=utf-8'
+        })
+
+        const submit = () => {
+
+        }
+    </script>    
+}

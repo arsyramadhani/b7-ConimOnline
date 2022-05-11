@@ -75,7 +75,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-6"><a id="linkEdit" class="btn btn-primary disabled" style="width: 100%;">Edit</a></div>
-                            <div class="col-6"><button class="btn btn-primary" style="width: 100%;">Delete</button></div>
+                            <div class="col-6"><button id="btnDelete" disabled class="btn btn-primary" style="width: 100%;">Delete</button></div>
                         </div>
                     </div>
                 </div>
@@ -178,7 +178,7 @@
                 $.when((getConimData(CNM_Number))).done((response) => {
                     let res = response[0]
                     console.log(response[0])
-                     
+
                     if (!res) {
                         Swal.fire({
                             icon: 'error',
@@ -186,7 +186,7 @@
                         }).then(() => {
                             window.location.replace(window.location.origin + '/oops');
                         })
-                    } else { 
+                    } else {
                         //console.log(res.isUserCanApprove)
                         if (res.isUserCanApprove === 1) {
                             $('#divApprovalConim').removeAttr('hidden')
@@ -195,6 +195,11 @@
                         // edit button
                         if (res.isUserCanEdit === 1) {
                             $('#linkEdit').removeClass('disabled')
+                        }
+
+                        if (res.isUserCanDelete === 1) {
+                            @*$('#linkEdit').removeClass('disabled')*@
+                            $('#btnDelete').removeAttr('disabled')
                         }
 
                         // Get Attachment and render file attachment
@@ -226,7 +231,7 @@
                             //console.log(response)
 
                             let html = response.map((val) => {
-                                console.log(val.CNM_ApprovalType + ' -- ' + val.UserAD)
+                                console.log(val)
                                 icon = ''
                                 rejectReason = ''
                                 if (val.ApprovalDescription.toUpperCase() === 'APPROVED') {
@@ -240,7 +245,7 @@
                                 } if (val.ApprovalDescription.toUpperCase() === 'REJECTED') {
                                     icon = `<button disabled class="btn btn-icon-only btn-danger btn-lg d-inline-flex align-items-center text-white" style="width: 100%" type="button">
                                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M15.73 3H8.27L3 8.27v7.46L8.27 21h7.46L21 15.73V8.27L15.73 3zM17 15.74L15.74 17 12 13.26 8.26 17 7 15.74 10.74 12 7 8.26 8.26 7 12 10.74 15.74 7 17 8.26 13.26 12 17 15.74z"></path></svg>
-                                    </button>` 
+                                    </button>`
                                 }
 
                                 return `<div class="row mb-3">
@@ -248,7 +253,7 @@
                                                ${icon}
                                             </div>
                                             <div class="col-9">
-                                                <small>${val.CNM_ApprovalType} 
+                                                <small>${val.CNM_ApprovalType}
                                                     <br /><b>${val.CNM_UserName} <br />
                                                     ${val.Name}</b>
                                                     <br />${val.ApprovalDescription} ${val.CNM_ApprovalDate !== '' ? 'at ' + val.CNM_ApprovalDate : ''}
@@ -325,17 +330,20 @@
                                             ApprovalType: "APPROVE"
                                         }),
                                         success: function (response) {
+                                            console.log(response)
+
                                             Swal.fire(
                                                 'Success!',
                                                 'Data berhasil disimpan.',
                                                 'success'
-                                            )
-                                            console.log(response)
+                                            ).then(() => {
+                                                location.reload()
+                                            })
                                         },
                                         error: (err) => {
-                                            console.error(err) 
+                                            console.error(err)
                                         }
-                                    }) 
+                                    })
                                 }
                             })
 
@@ -360,26 +368,46 @@
                                         data: JSON.stringify({
                                             Option: "POST_APPROVAL",
                                             Number: res.CNM_Number,
-                                            NIK: sessionStorage.NIK,    
+                                            NIK: sessionStorage.NIK,
                                             ApprovalType: "REJECT",
                                             ApprovalNote: value
                                         }),
                                         success: function (response) {
+                                            console.log(response)
                                             Swal.fire(
                                                 'Success!',
                                                 'Data berhasil disimpan.',
                                                 'success'
-                                            )
-                                            console.log(response)
+                                            ).then(() => {
+                                                location.reload()
+                                            })
                                         },
                                         error: (err) => {
                                             console.error(err)
                                         }
                                     })
-                                } 
+                                }
                             })
 
                         });
+
+                        $('#btnDelete').on('click', () => {
+                            Swal.fire({
+                                title: `Apakah anda yakin?`,
+                                text: `Hapus laporan conim ${res.CNM_Number}`,
+                                icon: 'warning',
+                            showCancelButton: true,
+                                confirmButtonText: 'Ya'
+                            }).then(({isConfirmed}) => {
+                                if (isConfirmed) {
+                                    Swal.fire(
+                                        'Success!',
+                                        'Data berhasil dihapus.',
+                                        'success'
+                                    )
+                                }
+                            })
+                        })
 
                     }
                 })
@@ -401,7 +429,8 @@
                 data: JSON.stringify({
                     Option: "GET_LAPORAN_BY_ID",
                     Number: Number,
-                    NIK: sessionStorage.NIK
+                    NIK: sessionStorage.NIK,
+                    UserName: sessionStorage.USERAD
                 }),
                 success: function (response) {
                     return response

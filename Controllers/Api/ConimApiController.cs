@@ -22,8 +22,9 @@ namespace ConimOnline.Controllers.Api
 
         readonly string conString = ConfigurationManager.ConnectionStrings["CONIM"].ConnectionString;
         readonly string SP_CONIM_ONLINE = "[DBO].[SP_CONIM_ONLINE]";
-        readonly string SP_CONIM_LAPORAN = "[DBO].[SP_CONIM_LAPORAN]";
+        readonly string SP_CONIM_LAPORAN = "[DBO].[SP_CONIM_LAPORAN]"; 
         readonly string ConimConn = "CONIM";
+        readonly string CultureAppsConn = "CULTURE_APPS";
 
         // GET api/<controller>
         [Route("api/conim")]
@@ -53,6 +54,7 @@ namespace ConimOnline.Controllers.Api
                 { "CNM_PICCompanyApproval", conimModel.PicCompanyApproval },
                 { "CNM_UserID", conimModel.UserId },
                 { "CNM_Number", conimModel.Number },
+                { "CNM_NIKBefore", conimModel.NIKBefore },
                 { "Filename", conimModel.Filename},
                 { "Filepath", conimModel.Filepath},
                 { "ApprovalType", conimModel.ApprovalType},
@@ -101,6 +103,7 @@ namespace ConimOnline.Controllers.Api
                 { "CNM_PICCompanyApproval", conimModel.PicCompanyApproval },
                 { "CNM_UserID", conimModel.UserId },
                 { "CNM_Number", conimModel.Number },
+                { "CNM_NIKBefore", conimModel.NIKBefore },
                 { "Filename", conimModel.Filename},
                 { "Filepath", conimModel.Filepath},
                 { "ApprovalType", conimModel.ApprovalType},
@@ -126,6 +129,56 @@ namespace ConimOnline.Controllers.Api
 
             return conimDAL.SP(parameters, SP_CONIM_LAPORAN, ConimConn);
 
+        }
+
+        [Route("api/v1/{sp}")]
+        [HttpPost]
+        public dynamic PostConim([FromBody] ConimModel conimModel, [FromUri] string sp)
+        {
+            var dictionary = new Dictionary<string, object>
+            {
+                { "OPTION", conimModel.Option },
+                { "USERAD", conimModel.UserName },
+                { "CNM_NIK", conimModel.NIK },
+                { "CNM_Type", conimModel.Type },
+                { "CNM_NAMA", conimModel.Name },
+                { "CNM_Creator", conimModel.UserName },
+                { "CNM_Departemen", conimModel.Department },
+                { "CNM_SubDept", conimModel.Subdept },
+                { "CNM_Tema", conimModel.Tema },
+                { "CNM_Approval", conimModel.Approval },
+                { "CNM_PICApproval", conimModel.PicApproval },
+                { "CNM_PICCompanyApproval", conimModel.PicCompanyApproval },
+                { "CNM_UserID", conimModel.UserId },
+                { "CNM_Number", conimModel.Number },
+                { "CNM_Flag", conimModel.Flag },
+                { "CNM_NIKBefore", conimModel.NIKBefore },
+                { "Filename", conimModel.Filename},
+                { "Filepath", conimModel.Filepath},
+                { "CNM_Year", conimModel.Year},
+                { "CNM_Site", conimModel.Site},
+                { "ApprovalType", conimModel.ApprovalType},
+                { "CNM_NoteApproval", conimModel.ApprovalNote}
+            };
+            var parameters = new DynamicParameters(dictionary);
+
+
+            if (conimModel.Type == "QCP" || conimModel.Type == "QCC")
+            {
+                if (conimModel.Option == "POST_LAPORAN")
+                {
+                    //DataTable dtAnggota = JsonConvert.DeserializeObject<DataTable>(conimModel.ListAnggota);
+                    //DataTable dtFasilitator = JsonConvert.DeserializeObject<DataTable>(conimModel.ListFasilitator.ToString());
+                    DataTable dtAnggota = ToDataTable(conimModel.ListAnggota);
+                    DataTable dtFasilitator = ToDataTable(conimModel.ListFasilitator);
+
+
+                    parameters.Add("@LIST_ANGGOTA", dtAnggota.AsTableValuedParameter("[dbo].[AnggotaTableType]"));
+                    parameters.Add("@LIST_FASILITATOR", dtFasilitator.AsTableValuedParameter("[dbo].[FasilitatorTableType]"));
+                }
+            }
+
+            return conimDAL.SP(parameters, "[DBO].[" + sp.ToUpper() + "]", CultureAppsConn); 
         }
 
         public static DataTable ToDataTable<T>(List<T> items)

@@ -10,34 +10,40 @@
         </div>*@
     <div class="row mb-1 ">
         <div class="col-lg-4 col-xl-4 mb-2">
-            <select id="sel_dept" class="form-control form-control-sm ">
-                @*<option>Support - IT</option>*@
+            <select id="sel_nama" class="form-control form-control-sm ">
+                <option></option>
             </select>
         </div>
         <div class="col-lg-4 col-xl-4 mb-2">
-            <select id="sel_emp" class="form-control form-control-sm ">
+            <select id="sel_dept" class="form-control form-control-sm ">
+                <option></option>
             </select>
         </div>
         <div class="col-lg-4 col-xl-4 mb-2">
             <select id="sel_site" class="form-control form-control-sm ">
+                <option></option>
             </select>
         </div>
+
         <div class="col-lg-4 col-xl-4 mb-2">
             <select id="sel_kategori" class="form-control form-control-sm ">
+                <option></option>
             </select>
         </div>
         <div class="col-lg-4 col-xl-4 mb-2">
             <select id="sel_year" class="form-control form-control-sm ">
+                <option></option>
             </select>
         </div>
         <div class="col-lg-4 col-xl-4 mb-2">
             <select id="sel_status" class="form-control form-control-sm ">
+                <option></option>
             </select>
         </div>
     </div>
     <div class="row">
         <div>
-            <button class="btn btn-sm btn-outline-success">Find</button> 
+            <button id="btnFind" class="btn btn-sm btn-outline-success">Find</button>
         </div>
     </div>
 
@@ -59,7 +65,7 @@
                 <th class="border-gray-200">Tanggal Outstanding</th>
             </tr>
         </thead>
-        <tbody> 
+        <tbody>
         </tbody>
     </table>
     <div class="card-footer px-3 border-0 d-flex flex-column flex-lg-row align-items-center justify-content-between">
@@ -68,267 +74,211 @@
 </div>
 @section scripts{
     <script type="text/javascript">
-        const DTO = {
-            Department: null,
-            NIK: null,
+        let DTO = {
+            nik: null,
+            dept: null,
+            site: null,
+            kategori: null,
+            year: null,
+            status: null
         }
-        $(document).ready(function () {
+        $(document).ready(function () { 
+
             const table = $('#tblConim').DataTable({
                 searching: false,
                 "bSort": false,
                 "dom": 'rtip'
-            }) 
+            })
 
+            $('#sel_nama').select2({
+                placeholder: "Pilih Nama"
+            });
+            $('#sel_dept').select2({
+                placeholder: "Pilih Departemen"
+            });
+            $('#sel_site').select2({
+                placeholder: "Pilih Site"
+            });
+            $('#sel_kategori').select2({
+                placeholder: "Pilih Kategori",
+                minimumResultsForSearch: Infinity,
+            });
+            $('#sel_year').select2({
+                placeholder: "Pilih Tahun"
+            });
+            $('#sel_status').select2({
+                placeholder: "Pilih Status Laporan"
+            });
+
+            // Load Category
+            $.ajax({
+                type: "POST",
+                url: "/api/v1/sp_get_list",
+                data: JSON.stringify({
+                    Option: "CONIM_CATEGORY"
+                }),
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                success: function (res) { 
+                    let result = res.map(val => `<option data-id='${val.ID}'>${val.TEXT}</option>`)
+                    $('#sel_kategori').append(`<option value='-'>All Kategori</option>`)
+                    $('#sel_kategori').append(...result).val('-').trigger('change')
+
+                    DTO.kategori = $('#sel_kategori').val()
+                },
+                error: (err) => {
+                    console.error(err)
+                }
+            });
             // Load Department
             $.ajax({
                 type: "POST",
-                url: "/api/conim",
+                url: "/api/v1/sp_get_list",
                 data: JSON.stringify({
-                    Option: "GET_DEPARTMENT"
+                    Option: "DEPARTMENT"
                 }),
                 dataType: "json",
                 contentType: 'application/json; charset=utf-8',
                 success: function (res) {
-                    $('#sel_dept').select2({
-                        placeholder: "Departemen",
-                        data: res.map((val, i) => {
-                            return {
-                                id: i,
-                                text: val.DEPARTMENT
-                            }
-                        }
-                        )
-                    }).val(null).trigger('change')
+                    let result = res.map(val => `<option data-id='${val.ID}'>${val.TEXT}</option>`)
+                    $('#sel_dept').append(`<option value='-'>All Department</option>`)
+                    $('#sel_dept').append(...result).val('-').trigger('change')
+                    DTO.dept = $('#sel_dept').val()
                 },
                 error: (err) => {
                     console.error(err)
                 }
             });
-
-            // Load Employee
+            // LOAD SITE
             $.ajax({
                 type: "POST",
-                url: "/api/conim",
+                url: "/api/v1/sp_get_list",
                 data: JSON.stringify({
-                    Option: "GET_EMPLOYEES"
+                    Option: "SITE"
                 }),
                 dataType: "json",
                 contentType: 'application/json; charset=utf-8',
                 success: function (res) {
-                    let result = res.map((val, i) => {
-                        return {
-                            id: val.nik,
-                            text: val.username
-                        }
-                    }) 
-
-                    $('#sel_emp').select2({
-                        placeholder: "Karyawan",
-                        data: result
-                    }).val(null).trigger('change')
+                    let result = res.map(val => `<option data-id='${val.ID}'>${val.TEXT}</option>`)
+                    $('#sel_site').append(`<option value='-'>All Site</option>`)
+                    $('#sel_site').append(...result).val('-').trigger('change')
+                    DTO.site = $('#sel_site').val()
                 },
                 error: (err) => {
                     console.error(err)
                 }
             });
-
-            // Load Site
+            // LOAD EMPLOYEE
             $.ajax({
                 type: "POST",
-                url: "/api/conim",
+                url: "/api/v1/sp_get_list",
                 data: JSON.stringify({
-                    Option: "GET_SITE"
+                    Option: "EMPLOYEE"
                 }),
                 dataType: "json",
                 contentType: 'application/json; charset=utf-8',
                 success: function (res) {
-                    let result = res.map((val, i) => {
-                        return {
-                            id: val.Location,
-                            text: val.Location
-                        }
-                    }) 
-
-                    $('#sel_site').select2({
-                        placeholder: "Site",
-                        data: result
-                    }).val(null).trigger('change')
+                    let result = res.map(val => `<option value='${val.ID}' data-site='${val.SITE}' data-dept='${val.DEPT}'>${val.TEXT}</option>`)
+                    $('#sel_nama').append(...result).trigger('change')
                 },
                 error: (err) => {
                     console.error(err)
                 }
             });
-
-            // Load Type
+            // LOAD YEAR
             $.ajax({
                 type: "POST",
-                url: "/api/conim",
+                url: "/api/v1/sp_get_list",
                 data: JSON.stringify({
-                    Option: "GET_TYPE"
+                    Option: "YEAR"
                 }),
                 dataType: "json",
                 contentType: 'application/json; charset=utf-8',
                 success: function (res) {
-                    let result = res.map((val, i) => {
-                        return {
-                            id: val.type,
-                            text: val.description
-                        }
-                    })
+                    const d = new Date();
+                    let year = d.getFullYear();
 
-                    $('#sel_kategori').select2({
-                        placeholder: "Kategori",
-                        data: result
-                    }).val(null).trigger('change')
+                    let result = res.map(val => `<option data-id='${val.ID}'>${val.TEXT}</option>`)
+                    $('#sel_year').append(...result).trigger('change')
+                    $('#sel_year').val(year).trigger('change')
+                    DTO.year = $('#sel_year').val()
                 },
                 error: (err) => {
                     console.error(err)
                 }
             });
-
-            // Get Year
+            // LOAD STATUS
             $.ajax({
                 type: "POST",
-                url: "/api/conim",
+                url: "/api/v1/sp_get_list",
                 data: JSON.stringify({
-                    Option: "GET_YEAR"
+                    Option: "STATUS_CONIM"
                 }),
                 dataType: "json",
                 contentType: 'application/json; charset=utf-8',
                 success: function (res) {
-                    let result = res.map((val, i) => {
-                        return {
-                            id: val.CNM_Tahun,
-                            text: val.CNM_Tahun
-                        }
-                    })
+                    console.log(res)
+                    let result = res.map(val => `<option value='${val.ID}'>${val.TEXT}</option>`)
 
-                    $('#sel_year').select2({
-                        placeholder: "Tahun",
-                        data: result
-                    }).val(null).trigger('change')
+                    $('#sel_status').append(`<option value='-'>All Status</option>`)
+                    $('#sel_status').append(...result).val('-').trigger('change')
+
+                    DTO.status = $('#sel_status').val()
                 },
                 error: (err) => {
                     console.error(err)
                 }
             });
 
-            // Get Status
-            $.ajax({
-                type: "POST",
-                url: "/api/conim",
-                data: JSON.stringify({
-                    Option: "GET_STATUS"
-                }),
-                dataType: "json",
-                contentType: 'application/json; charset=utf-8',
-                success: function (res) {
-                    let result = res.map((val, i) => {
-                        return {
-                            id: val.ID,
-                            text: val.STATUS
-                        }
-                    })
-
-                    $('#sel_status').select2({
-                        placeholder: "Status",
-                        data: result
-                    }).val(null).trigger('change')
-                },
-                error: (err) => {
-                    console.error(err)
-                }
-            });
-
-
-            $('#sel_dept').on('select2:select', function (e) {
-                DTO.Department = e.params.data.text
-            });
-            $('#sel_emp').on('select2:select', function (e) {
-                DTO.NIK = e.params.data.id
-            });
-        });
-
-
-    </script>    
-}
-
-@*@section scripts{
-    <script type="text/javascript">
-        $(document).ready(function () {
-            if (initialize()) {
-                getLaporan()
+            const changeFilter = (DTO) => {
+                $('#sel_nama').val(DTO.nik).trigger('change')
+                $('#sel_dept').val(DTO.dept).trigger('change')
+                $('#sel_site').val(DTO.site).trigger('change')
             }
+
+            $('#sel_nama').on('select2:select', (e) => {
+                const nik = e.params.data.id
+                const dept = e.params.data.element.dataset.dept
+                const site = e.params.data.element.dataset.site
+
+                console.log(nik, dept, site)
+
+                DTO.nik = nik
+                DTO.dept = dept
+                DTO.site = site
+
+                changeFilter(DTO)
+            })
+
+            $('#sel_status').on('select2:select', (e) => DTO.status = e.params.data.id)
+            $('#sel_year').on('select2:select', (e) => DTO.year = e.params.data.id)
+            $('#sel_kategori').on('select2:select', (e) => DTO.type = e.params.data.id)
+             
+            // Submit Find with parameters
+            $('#btnFind').on('click', (e) => { 
+                $.ajax({
+                    type: "POST",
+                    url: "/api/v1/sp_find",
+                    data: JSON.stringify({
+                        Option: "LAPORAN",
+                        NIK : DTO.nik,
+                        Type: DTO.type,
+                        Department : DTO.dept,
+                        Year: DTO.year,
+                        Site: DTO.site,
+                        Flag: DTO.status
+                    }),
+                    dataType: "json",
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (res) {
+                        console.log(res)
+                        // Disini Tambah data load
+                    },
+                    error: (err) => {
+                        console.error(err)
+                    }
+                })
+            })
         });
-
-        const initialize = () => {
-            $('#tblConim').DataTable({
-                "lengthChange": false,
-                "searching": false,
-                "ordering": false
-            });
-
-            $('#sel_dept').select2({
-                placeholder: "Departemen"
-            });
-            $('#sel_emp').select2({
-                placeholder: "Nama Karyawan"
-            });
-            $('#sel_site').select2({
-                placeholder: "Site",
-
-            });
-            $('#sel_kategori').select2({
-                placeholder: "Kategori",
-                minimumResultsForSearch: Infinity
-            });
-            $('#sel_year').select2({
-                placeholder: "Tahun"
-            });
-            $('#sel_status').select2({
-                placeholder: "Status",
-                minimumResultsForSearch: Infinity
-            });
-
-            return true
-        }
-
-
-
-
-
     </script>
-
-}*@
-
-@*@section scripts{
-
-    <script type="text/javascript">
-
-        $(document).ready(function () {
-            if (initialize()) {
-                getLaporan()
-            }
-        });
-
-           
-
-            //const getLaporan = () => {
-            //    return $.ajax({
-            //        dataType: "json",
-            //        contentType: 'application/json; charset=utf-8',
-            //        type: "POST",
-            //        url: "/Conim",
-            //        data: JSON.stringify({
-            //            Option: "GET_LAPORAN"
-            //        }),
-            //        success: function (response) {
-            //            let res = JSON.parse(response)
-            //            console.log(res)
-            //            return JSON.parse(response)
-            //        }
-            //    });
-            //}
-</script>
-
-}*@
+} 

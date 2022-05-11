@@ -27,6 +27,7 @@ namespace ConimOnline.Models
         public string QCC { set; get; } 
 
         public string NIK { set; get; }
+        public string NIKBefore { set; get; }
 
         public string UserName { set; get; }
 
@@ -52,6 +53,8 @@ namespace ConimOnline.Models
         public string Filename { set; get; }
         public string Filepath { set; get; }
         public string Name { set; get; }
+        public string Year { set; get; }
+        public string Site { set; get; } 
 
         //public List<AnggotaModel> ListAnggota;
         //public string ListAnggota;

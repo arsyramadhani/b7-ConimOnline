@@ -156,6 +156,7 @@
     <Compile Include="Controllers\LaporanController.cs" />
     <Compile Include="Controllers\OopsController.cs" />
     <Compile Include="Controllers\PicController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="DAL\ConimDAL.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -697,6 +698,7 @@
     <Content Include="Views\Pic\ProgramKerja.cshtml" />
     <Content Include="Views\Pic\Penilaian.cshtml" />
     <Content Include="Views\Laporan\New.cshtml" />
+    <Content Include="Views\Settings\PICDepartemen.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
